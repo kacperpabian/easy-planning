@@ -102,3 +102,9 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+.idea/
+e_p_django/e_p_django/__init__.py
+e_p_django/e_p_django/settings.py
+e_p_django/e_p_django/urls.py
+e_p_django/e_p_django/wsgi.py
+e_p_django/manage.py
