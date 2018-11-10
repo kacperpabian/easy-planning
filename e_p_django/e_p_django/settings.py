@@ -27,7 +27,8 @@ SECRET_KEY = '=5e-_)pbe_r1d^rdcwu6tw1)2%3976l3kvbr@5q+rh$erpfo&w'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost',
+                 '185.24.216.166']
 
 
 # Application definition
@@ -58,7 +59,7 @@ ROOT_URLCONF = 'e_p_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'start_page/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,5 +127,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
