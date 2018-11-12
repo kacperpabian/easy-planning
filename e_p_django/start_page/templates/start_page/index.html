@@ -1,0 +1,9 @@
+{% if all_schedules %}
+    <ul>
+        {% for schedule in all_schedules %}
+        <li><a href="/schedules/{{ schedule.id }}/">{{ schedule.name }}</a></li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <h3>You don't have any schedules</h3>
+{% endif %}

@@ -8,52 +8,62 @@
 from django.db import models
 
 
-class Breakes(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    days_definition = models.ForeignKey('DaysDefinition', models.CASCADE, db_column='Days_definition_ID')  # Field name made lowercase.
-    lesson_number = models.IntegerField(db_column='Lesson_number')  # Field name made lowercase.
-    break_time = models.IntegerField(db_column='Break_time')  # Field name made lowercase.
+class AuthUser(models.Model):
+    password = models.CharField(max_length=128)
+    last_login = models.DateTimeField(blank=True, null=True)
+    is_superuser = models.IntegerField()
+    username = models.CharField(unique=True, max_length=150)
+    first_name = models.CharField(max_length=30)
+    last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
+    is_staff = models.IntegerField()
+    is_active = models.IntegerField()
+    date_joined = models.DateTimeField()
 
     class Meta:
-        db_table = 'breakes'
+        db_table = 'auth_user'
 
 
 class Class(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    school = models.ForeignKey('School', models.DO_NOTHING, db_column='School_ID')  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
-    short_name = models.CharField(db_column='Short_name', max_length=45, blank=True, null=True)  # Field name made lowercase.
+    school = models.ForeignKey('School', models.DO_NOTHING)
+    name = models.CharField(max_length=45)
+    short_name = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'class'
 
 
 class ClassGroup(models.Model):
-    class_field = models.ForeignKey(Class, models.CASCADE, db_column='Class_ID')  # Field name made lowercase. Field renamed because it was a Python reserved word.
-    group = models.ForeignKey('Group', models.CASCADE, db_column='Group_ID')  # Field name made lowercase.
+    class_field = models.ForeignKey(Class, models.DO_NOTHING, db_column='class_id')  # Field renamed because it was a Python reserved word.
+    group = models.ForeignKey('Group', models.DO_NOTHING)
 
     class Meta:
-        db_table = 'Class_Group'
+        managed = False
+        db_table = 'class_group'
 
 
 class ClassTeacher(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    teacher = models.ForeignKey('Teacher', models.CASCADE, db_column='Teacher_ID')  # Field name made lowercase.
-    class_field = models.ForeignKey(Class, models.CASCADE, db_column='Class_ID')  # Field name made lowercase. Field renamed because it was a Python reserved word.
-    tutor = models.IntegerField(db_column='Tutor', blank=True, null=True)  # Field name made lowercase.
+    teacher = models.ForeignKey('Teacher', models.DO_NOTHING)
+    class_field = models.ForeignKey(Class, models.DO_NOTHING, db_column='class_id')  # Field renamed because it was a Python reserved word.
+    tutor = models.IntegerField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'class_teacher'
 
 
 class DaysDefinition(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey('Schedule', models.CASCADE, db_column='Schedule_ID')  # Field name made lowercase.
-    weekend_days = models.CharField(db_column='Weekend_days', max_length=45)  # Field name made lowercase.
-    start_time = models.CharField(db_column='Start_time', max_length=45)  # Field name made lowercase.
-    max_lessons = models.CharField(db_column='Max_lessons', max_length=45)  # Field name made lowercase.
+    schedule = models.ForeignKey('Schedule', models.DO_NOTHING)
+    weekend_days = models.CharField(max_length=45)
+    start_time = models.CharField(max_length=45)
+    max_lessons = models.CharField(max_length=45)
 
     class Meta:
+        managed = False
         db_table = 'days_definition'
 
 
@@ -66,9 +76,9 @@ class Group(models.Model):
 
 class Lesson(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    class_field = models.ForeignKey(Class, models.CASCADE, db_column='Class_ID')  # Field name made lowercase. Field renamed because it was a Python reserved word.
-    group = models.ForeignKey(Group, models.CASCADE, db_column='Group_ID')  # Field name made lowercase.
-    lesson_number = models.IntegerField(db_column='Lesson_number')  # Field name made lowercase.
+    class_field = models.ForeignKey(Class, models.DO_NOTHING, db_column='class_id')  # Field renamed because it was a Python reserved word.
+    group = models.ForeignKey(Group, models.DO_NOTHING)
+    lesson_number = models.IntegerField()
 
     class Meta:
         db_table = 'lesson'
@@ -76,21 +86,22 @@ class Lesson(models.Model):
 
 class Room(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    school = models.ForeignKey('School', models.CASCADE, db_column='School_ID')  # Field name made lowercase.
-    lesson = models.ForeignKey(Lesson, models.CASCADE, db_column='Lesson_ID')  # Field name made lowercase.
-    room_number = models.CharField(db_column='Room_number', unique=True, max_length=10)  # Field name made lowercase.
-    capacity = models.IntegerField(db_column='Capacity')  # Field name made lowercase.
+    school = models.ForeignKey('School', models.DO_NOTHING)
+    lesson = models.ForeignKey(Lesson, models.DO_NOTHING)
+    room_number = models.CharField(unique=True, max_length=10)
+    capacity = models.IntegerField()
 
     class Meta:
+        managed = False
         db_table = 'room'
 
 
 class Schedule(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    user = models.ForeignKey('User', models.CASCADE, db_column='User_ID')  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
-    cycle = models.IntegerField(db_column='Cycle')  # Field name made lowercase.
-    school_year = models.CharField(db_column='School_year', max_length=45)  # Field name made lowercase.
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
+    name = models.CharField(max_length=45)
+    cycle = models.IntegerField()
+    school_year = models.CharField(max_length=45)
 
     class Meta:
         db_table = 'schedule'
@@ -98,20 +109,30 @@ class Schedule(models.Model):
 
 class School(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey(Schedule, models.CASCADE, db_column='Schedule_ID')  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
+    schedule = models.ForeignKey(Schedule, models.DO_NOTHING)
+    name = models.CharField(max_length=45)
 
     class Meta:
         db_table = 'school'
 
 
+class SchoolBreakes(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    days_definition = models.ForeignKey(DaysDefinition, models.DO_NOTHING)
+    lesson_number = models.IntegerField()
+    break_time = models.IntegerField()
+
+    class Meta:
+        db_table = 'school_breakes'
+
+
 class Subject(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    teacher = models.ForeignKey('Teacher', models.CASCADE, db_column='Teacher_ID')  # Field name made lowercase.
-    school = models.ForeignKey(School, models.CASCADE, db_column='School_ID')  # Field name made lowercase.
-    lesson = models.ForeignKey(Lesson, models.CASCADE, db_column='Lesson_ID')  # Field name made lowercase.
-    name = models.CharField(db_column='Name', unique=True, max_length=45)  # Field name made lowercase.
-    short_name = models.CharField(db_column='Short_name', unique=True, max_length=3)  # Field name made lowercase.
+    teacher = models.ForeignKey('Teacher', models.DO_NOTHING)
+    school = models.ForeignKey(School, models.DO_NOTHING)
+    lesson = models.ForeignKey(Lesson, models.DO_NOTHING)
+    name = models.CharField(unique=True, max_length=45)
+    short_name = models.CharField(max_length=45, blank=True, null=True)
 
     class Meta:
         db_table = 'subject'
@@ -119,27 +140,16 @@ class Subject(models.Model):
 
 class Teacher(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
-    surname = models.CharField(db_column='Surname', max_length=45)  # Field name made lowercase.
+    name = models.CharField(max_length=45)
+    surname = models.CharField(max_length=45)
 
     class Meta:
         db_table = 'teacher'
 
 
 class TeacherLesson(models.Model):
-    teacher = models.ForeignKey(Teacher, models.CASCADE, db_column='Teacher_ID')  # Field name made lowercase.
-    lesson = models.ForeignKey(Lesson, models.CASCADE, db_column='Lesson_ID')  # Field name made lowercase.
+    teacher = models.ForeignKey(Teacher, models.DO_NOTHING)
+    lesson = models.ForeignKey(Lesson, models.DO_NOTHING)
 
     class Meta:
         db_table = 'teacher_lesson'
-
-
-class User(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    login = models.CharField(db_column='Login', unique=True, max_length=45)  # Field name made lowercase.
-    password = models.CharField(db_column='Password', max_length=45)  # Field name made lowercase.
-    name = models.CharField(db_column='Name', max_length=45)  # Field name made lowercase.
-    surname = models.CharField(db_column='Surname', max_length=45)  # Field name made lowercase.
-
-    class Meta:
-        db_table = 'user'

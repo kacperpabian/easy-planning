@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Breakes
+from . import models
 # Register your models here.
-admin.site.register(Breakes)
+admin.site.register(models.Schedule)
