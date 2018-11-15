@@ -1,0 +1,7 @@
+<h1>{{ schedule.name }}</h1>
+<h3>{{ schedule.school_year }}</h3>
+<ul>
+    {% for sub in schedule.subject_set.all %}
+        <li>{{ sub.name }} (short - {{ sub.short_name }})</li>
+    {% endfor %}
+</ul>

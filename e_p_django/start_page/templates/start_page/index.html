@@ -1,4 +1,5 @@
 {% if all_schedules %}
+    <h3>List of schedules:</h3>
     <ul>
         {% for schedule in all_schedules %}
         <li><a href="/schedules/{{ schedule.id }}/">{{ schedule.name }}</a></li>
