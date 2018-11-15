@@ -60,6 +60,9 @@ def favorite(request, schedule_id):
             'error_message': "You did not select a valid subject"
       })
     else:
-        selected_subject.is_favorite = True
+        if selected_subject.is_favorite:
+            selected_subject.is_favorite = False
+        else:
+            selected_subject.is_favorite = True
         selected_subject.save()
         return render(request, 'start_page/schedule_detail.html', context={'schedule': schedule})
