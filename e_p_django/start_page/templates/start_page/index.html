@@ -2,7 +2,7 @@
     <h3>List of schedules:</h3>
     <ul>
         {% for schedule in all_schedules %}
-        <li><a href="/schedules/{{ schedule.id }}/">{{ schedule.name }}</a></li>
+        <li><a href="{% url 'start_page:detail' schedule.id %}">{{ schedule.name }}</a></li>
         {% endfor %}
     </ul>
 {% else %}

@@ -1,7 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login
 from django.views.generic import View
-from django.http import HttpResponse, Http404
 from .forms import UserForm
 from . import models
 
@@ -47,8 +46,20 @@ def index(request):
 
 
 def detail(request, schedule_id):
-    try:
-        schedule = models.Schedule.objects.get(id=schedule_id)
-    except models.Schedule.DoesNotExist:
-        raise Http404("Schedule does not exists")
+    schedule = get_object_or_404(models.Schedule, id=schedule_id)
     return render(request, "start_page/schedule_detail.html", context={'schedule': schedule})
+
+
+def favorite(request, schedule_id):
+    schedule = get_object_or_404(models.Schedule, id=schedule_id)
+    try:
+        selected_subject = schedule.subject_set.get(id=request.POST['subject'])
+    except (KeyError, models.Subject.DoesNotExist):
+        return render(request, 'start_page/schedule_detail.html', context={
+            'schedule': schedule,
+            'error_message': "You did not select a valid subject"
+      })
+    else:
+        selected_subject.is_favorite = True
+        selected_subject.save()
+        return render(request, 'start_page/schedule_detail.html', context={'schedule': schedule})

@@ -1,7 +1,20 @@
 <h1>{{ schedule.name }}</h1>
 <h3>{{ schedule.school_year }}</h3>
-<ul>
+
+{% if error_message %}
+    <p><strong>{{ error_message }}</strong></p>
+{% endif %}
+
+<form action="{% url 'start_page:favorite' schedule.id %}" method="post">
+    {% csrf_token %}
     {% for sub in schedule.subject_set.all %}
-        <li>{{ sub.name }} (short - {{ sub.short_name }})</li>
+        <input type="radio" id="song{{ forloop.counter }}" name="subject" value="{{ sub.id }}">
+        <label for="song{{ forloop.counter }}">
+            {{ sub.name }}
+            {% if sub.is_favorite %}
+                <img src="http://i.imgur.com/b9b13Rd.png">
+            {% endif %}
+        </label><br>
     {% endfor %}
-</ul>
+    <input type="submit" value="Favorite">
+</form>
