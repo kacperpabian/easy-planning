@@ -1,10 +1,15 @@
-{% if all_schedules %}
-    <h3>List of schedules:</h3>
-    <ul>
-        {% for schedule in all_schedules %}
-        <li><a href="{% url 'start_page:detail' schedule.id %}">{{ schedule.name }}</a></li>
-        {% endfor %}
-    </ul>
-{% else %}
-    <h3>You don't have any schedules</h3>
-{% endif %}
+<!-- loads the path to static files -->
+{% extends 'start_page/base.html' %}
+
+{% block body %}
+    {% if all_schedules %}
+        <h3>List of schedules:</h3>
+        <ul>
+            {% for schedule in all_schedules %}
+            <li><a href="{% url 'start_page:detail' schedule.id %}">{{ schedule.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h3>You don't have any schedules</h3>
+    {% endif %}
+{% endblock %}
