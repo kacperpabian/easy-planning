@@ -1,11 +1,12 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
-from django.views.generic import View
+from django.views import generic
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import UserForm
 from . import models
 
 
-class UserFormView(View):
+class UserFormView(generic.View):
     form_class = UserForm
     template_name = 'start_page/registration_form.html'
 
@@ -40,29 +41,25 @@ class UserFormView(View):
         return render(request, self.template_name, {'form': form})
 
 
-def index(request):
-    all_schedules = models.Schedule.objects.all()
-    return render(request, 'start_page/index.html', context={'all_schedules': all_schedules})
+class IndexView(generic.ListView):
+    template_name = 'start_page/index.html'
+    context_object_name = 'all_schedules'
+
+    def get_queryset(self):
+        return models.Schedule.objects.all()
 
 
-def detail(request, schedule_id):
-    schedule = get_object_or_404(models.Schedule, id=schedule_id)
-    return render(request, "start_page/schedule_detail.html", context={'schedule': schedule})
+class DetailView(generic.DetailView):
+    model = models.Schedule
+    template_name = "start_page/schedule_detail.html"
 
 
-def favorite(request, schedule_id):
-    schedule = get_object_or_404(models.Schedule, id=schedule_id)
-    try:
-        selected_subject = schedule.subject_set.get(id=request.POST['subject'])
-    except (KeyError, models.Subject.DoesNotExist):
-        return render(request, 'start_page/schedule_detail.html', context={
-            'schedule': schedule,
-            'error_message': "You did not select a valid subject"
-      })
-    else:
-        if selected_subject.is_favorite:
-            selected_subject.is_favorite = False
-        else:
-            selected_subject.is_favorite = True
-        selected_subject.save()
-        return render(request, 'start_page/schedule_detail.html', context={'schedule': schedule})
+class ScheduleCreate(CreateView):
+    model = models.Schedule
+    fields = ['name', 'cycle', 'school_year', 'school_name', 'description', 'weekend_days', 'start_time',
+              'max_lessons', 'user']
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        return super(ScheduleCreate, self).form_valid(form)
