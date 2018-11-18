@@ -6,6 +6,7 @@ from rest_framework.routers import DefaultRouter
 app_name = 'start_page'
 router = DefaultRouter()
 router.register('profile', views.UserViewSet)
+router.register('login', views.LoginViewSet, base_name='login')
 
 urlpatterns = [
     path('router', include(router.urls)),
