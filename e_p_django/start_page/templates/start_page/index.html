@@ -23,7 +23,7 @@
                             <a href="{% url 'start_page:detail' schedule.id %}" class="btn btn-primary btn-sm" role="button">Pokaz szczegoly</a>
 
                             <!-- Delete Album -->
-                            <form action="#" method="post" style="display: inline;">
+                            <form action="{% url 'start_page:schedule-delete' schedule.id %}" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <input type="hidden" name="schedule_id" value="{{ schedule.id }}" />
                                 <button type="submit" class="btn btn-default btn-sm">

@@ -1,9 +1,34 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views import generic
+from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+
+from rest_framework import viewsets
+from rest_framework.decorators import action
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import filters
+
 from .forms import UserForm
 from . import models
+from . import serializers
+from . import permissions
+
+
+class UserViewSet(viewsets.ModelViewSet):
+    """Handles creating reading and updating profiles"""
+    serializer_class = serializers.UserSerializer
+    queryset = models.AuthUser.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile,)
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('username', 'email',)
+
+    def perform_create(self, serializer):
+        serializer.save(owner=self.request.user)
 
 
 class UserFormView(generic.View):
@@ -18,26 +43,20 @@ class UserFormView(generic.View):
     # process form data
     def post(self, request):
         form = self.form_class(request.POST)
-
         if form.is_valid():
-
+            # store locally yet not post to database
             user = form.save(commit=False)
-
             # cleaned (normalized) data
             username = form.cleaned_data['username']
-            passsword = form.cleaned_data['password']
-            user.set_password(passsword)
+            password = form.cleaned_data['password']
+            user.set_password(password)
             user.save()
-
             # returns User object if credentials are correct
-            user = authenticate(username=username, passsword=passsword)
-
+            user = authenticate(request, username=username, password=password)
             if user is not None:
-
                 if user.is_active:
                     login(request, user)
                     return redirect('start_page:index')
-
         return render(request, self.template_name, {'form': form})
 
 
@@ -63,3 +82,18 @@ class ScheduleCreate(CreateView):
         obj = form.save(commit=False)
         obj.created_by = self.request.user
         return super(ScheduleCreate, self).form_valid(form)
+
+
+class ScheduleUpdate(UpdateView):
+    model = models.Schedule
+    fields = ['name', 'cycle', 'school_year', 'school_name', 'description', 'weekend_days', 'start_time',
+              'max_lessons', 'user']
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+class ScheduleDelete(DeleteView):
+    model = models.Schedule
+    success_url = reverse_lazy('start_page:index')
