@@ -33,10 +33,8 @@ class UserLoginView(generic.View):
 
     def post(self, request):
         form = self.form_class(None)
-        username = ['username']
-        print(username)
-        password = ['password']
-        print(password)
+        username = request.POST['username']
+        password = request.POST['password']
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
