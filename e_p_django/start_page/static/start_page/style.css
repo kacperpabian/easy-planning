@@ -1,11 +1,40 @@
 body{
-    background: white url("images/background.png");
+    background: #ffffff url("images/background.png");
 }
 
-.navbar{
-    border-radius: 0;
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
+    color: #ffffff; /*Sets the text hover color on navbar*/
 }
+
+.navbar-default .navbar-header > a:hover, .navbar-default .navbar-header > a:focus {
+    color: #ffffff; /*Sets the text hover color on navbar*/
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #afafaf; /*Change active text color here*/
+}
+.navbar-default .navbar-header > a {
+    color: #afafaf; /*Change active text color here*/
+}
+
+/*.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active >*/
+        /*a:hover, .navbar-default .navbar-nav > .active > a:focus {*/
+    /*color: white; !*BACKGROUND color for active*!*/
+    /*background-color: #022fae;*/
+/*}*/
 
 .navbar-brand{
     font-family: 'Satisfy', cursive;
+}
+
+.home-logo{
+    font-size: 80px;
+    float: none;
+    margin: 0 auto;
+}
+
+.navbar{
+    background-color: #000000;
+    border: none;
+    border-radius: 0;
 }

@@ -27,7 +27,7 @@
         <!-- Items -->
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
-                <li class="">
+                <li {% if request.resolver_match.url_name == 'index' %}class="active"{% endif %}>
                     <a href="{% url 'start_page:index' %}">
                         <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp; Schedules
                     </a>
@@ -53,7 +53,7 @@
                     </a>
                 </li>
                 <li class="">
-                    <a href="#">
+                    <a href="{% url 'logout' %}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
                     </a>
                 </li>

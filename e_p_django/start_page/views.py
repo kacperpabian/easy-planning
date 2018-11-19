@@ -1,23 +1,42 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import UserFormRegister, UserFormLogin
 from . import models
 
 
+class HomeView(generic.View):
+    """View for home page"""
+    template_name = 'registration/home.html'
+
+    def get(self, request):
+        user = get_user(request)
+        if user.is_authenticated:
+            return redirect('start_page:index')
+        else:
+            return render(request, self.template_name)
+
+
 class UserLoginView(generic.View):
+    """View for user login"""
     form_class = UserFormLogin
-    template_name = 'start_page/login.html'
+    template_name = 'registration/home.html'
 
     def get(self, request):
         form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        user = get_user(request)
+        if user.is_authenticated:
+            return redirect('start_page:index')
+        else:
+            return render(request, self.template_name, {'form': form})
 
     def post(self, request):
         form = self.form_class(None)
         username = ['username']
+        print(username)
         password = ['password']
+        print(password)
         user = authenticate(username=username, password=password)
         if user is not None:
             if user.is_active:
@@ -28,6 +47,7 @@ class UserLoginView(generic.View):
 
 
 class UserRegisterView(generic.View):
+    """View for user registration"""
     form_class = UserFormRegister
     template_name = 'start_page/registration_form.html'
 
