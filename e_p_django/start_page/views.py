@@ -2,12 +2,33 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login
 from django.views import generic
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .forms import UserForm
+from .forms import UserFormRegister, UserFormLogin
 from . import models
 
 
-class UserFormView(generic.View):
-    form_class = UserForm
+class UserLoginView(generic.View):
+    form_class = UserFormLogin
+    template_name = 'start_page/login.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(None)
+        username = ['username']
+        password = ['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect('start_page:index')
+
+        return render(request, self.template_name, {'form': form})
+
+
+class UserRegisterView(generic.View):
+    form_class = UserFormRegister
     template_name = 'start_page/registration_form.html'
 
     # display blank form
@@ -25,12 +46,12 @@ class UserFormView(generic.View):
 
             # cleaned (normalized) data
             username = form.cleaned_data['username']
-            passsword = form.cleaned_data['password']
-            user.set_password(passsword)
+            password = form.cleaned_data['password']
+            user.set_password(password)
             user.save()
 
             # returns User object if credentials are correct
-            user = authenticate(username=username, passsword=passsword)
+            user = authenticate(username=username, password=password)
 
             if user is not None:
 
