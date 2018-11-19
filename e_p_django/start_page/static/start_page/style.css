@@ -26,11 +26,18 @@ body{
 .navbar-brand{
     font-family: 'Satisfy', cursive;
 }
-
+div.font-size-logo{
+    font-size: calc(40px + 2vw);
+}
 .home-logo{
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none; /* Firefox */
+    -ms-user-select: none; /* IE10+/Edge */
+    user-select: none; /* Standard */
     font-size: 80px;
     float: none;
     margin: 0 auto;
+    white-space: nowrap;
 }
 
 .navbar{
