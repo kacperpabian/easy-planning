@@ -13,6 +13,8 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework import filters
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.decorators import api_view
+from rest_framework.renderers import TemplateHTMLRenderer
 
 from .forms import UserForm
 from . import models
@@ -28,6 +30,19 @@ class UserViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.UpdateOwnProfile,)
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username', 'email',)
+
+
+class UserApiView(APIView):
+    renderer_classes = [TemplateHTMLRenderer]
+    template_name = 'start_page/registration_form.html'
+
+    def get(self, request):
+        users = models.AuthUser.objects.all()
+        serializer = serializers.UserSerializer(users, many=True)
+        return Response(serializer.data)
+
+    def post(self):
+        pass
 
 
 class LoginViewSet(viewsets.ViewSet):

@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from start_page import views
+
+from rest_framework.urlpatterns import format_suffix_patterns
 
 urlpatterns = [
-    path('schedules/', include('start_page.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls'))
+    path('api/', include('start_page.urls'))
 ]
+
+# urlpatterns = [
+#     path('schedules/', include('start_page.urls')),
+#     path('admin/', admin.site.urls),
+#     path('accounts/', include('django.contrib.auth.urls'))
+# ]
