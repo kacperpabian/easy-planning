@@ -18,11 +18,9 @@
                         <div class="caption">
                             <h2>{{ schedule.name }}</h2>
                             <h4>{{ schedule.school_year }}</h4>
-
                             <!-- View Details -->
                             <a href="{% url 'start_page:detail' schedule.id %}" class="btn btn-primary btn-sm" role="button">Pokaz szczegoly</a>
-
-                            <!-- Delete Album -->
+                            <!-- Delete Schedule -->
                             <form action="#" method="post" style="display: inline;">
                                 {% csrf_token %}
                                 <input type="hidden" name="schedule_id" value="{{ schedule.id }}" />

@@ -3,9 +3,11 @@ from django import forms
 
 
 class UserFormRegister(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput, label='Hasło')
 
     class Meta:
+        labels = {'username': 'Login',
+                  'email': 'Email'}
         model = User
         fields = ['username', 'email', 'password']
 

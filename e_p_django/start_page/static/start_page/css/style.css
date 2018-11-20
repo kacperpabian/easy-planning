@@ -1,5 +1,5 @@
 body{
-    background: #ffffff url("images/background.png");
+    background: #ffffff url("../images/background.png");
 }
 
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus {
@@ -22,7 +22,6 @@ body{
     /*color: white; !*BACKGROUND color for active*!*/
     /*background-color: #022fae;*/
 /*}*/
-
 .navbar-brand{
     font-family: 'Satisfy', cursive;
 }
