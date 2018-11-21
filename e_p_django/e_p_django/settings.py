@@ -42,7 +42,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'widget_tweaks',
-    'start_page'
+    'sweetify',
+    'start_page',
+    'object_creation',
+    'user_profile'
 ]
 
 MIDDLEWARE = [
@@ -134,6 +137,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'start_page/static/')
 LOGIN_REDIRECT_URL = '/schedules'
 LOGOUT_REDIRECT_URL = '/'
