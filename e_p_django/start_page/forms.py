@@ -8,6 +8,11 @@ class UserFormRegister(forms.ModelForm):
     class Meta:
         labels = {'username': 'Login',
                   'email': 'Email'}
+        error_messages = {
+            'username': {
+                'unique': 'Użytkownik z tym loginem już istnieje.'
+            }
+        }
         model = User
         fields = ['username', 'email', 'password']
 

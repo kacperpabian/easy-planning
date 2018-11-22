@@ -52,7 +52,10 @@ class UserRegisterView(generic.View):
     # process form data
     def post(self, request):
         form = self.form_class(request.POST)
-        if form.is_valid():
+        email = request.POST['email']
+        if models.AuthUser.objects.filter(email=email):
+            messages.error(request, "Użytkownik z takim adresem email już istnieje.")
+        elif form.is_valid():
             user = form.save(commit=False)
             # cleaned (normalized) data
             username = form.cleaned_data['username']

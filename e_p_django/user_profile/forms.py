@@ -10,6 +10,11 @@ class UserFormProfile(forms.ModelForm):
                   'first_name': 'Imię',
                   'last_name': 'Nazwisko'}
         model = User
+        error_messages = {
+            'username': {
+                'unique': 'Użytkownik z tym loginem już istnieje.'
+            }
+        }
         fields = ['username', 'email', 'first_name', 'last_name']
 
 
