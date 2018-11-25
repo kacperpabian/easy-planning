@@ -2,8 +2,9 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, get_user, get_user_model
 from django.views import generic
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .forms import UserFormRegister, UserFormLogin
+# noinspection PyUnresolvedReferences
+from object_creation.forms import ScheduleForm
 from . import models
 
 
@@ -82,15 +83,9 @@ class ScheduleView(generic.ListView):
         return models.Schedule.objects.filter(user_id=user.id)
 
 
-class DetailView(generic.DetailView):
+class ScheduleCreate(generic.CreateView):
     model = models.Schedule
-    template_name = "start_page/schedule_detail.html"
-
-
-class ScheduleCreate(CreateView):
-    model = models.Schedule
-    fields = ['name', 'cycle', 'school_year', 'school_name', 'description', 'weekend_days', 'start_time',
-              'max_lessons']
+    form_class = ScheduleForm
 
     def form_valid(self, form):
         obj = form.save(commit=False)

@@ -22,8 +22,15 @@ body{
     /*color: white; !*BACKGROUND color for active*!*/
     /*background-color: #022fae;*/
 /*}*/
+
 .navbar-brand{
     font-family: 'Satisfy', cursive;
+}
+.schedule-name{
+    font-family: 'Satisfy', cursive;
+    color: black;
+    font-size: x-large;
+    font-weight: bold;
 }
 div.font-size-logo{
     font-size: calc(40px + 2vw);

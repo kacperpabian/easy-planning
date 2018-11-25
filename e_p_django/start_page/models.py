@@ -95,7 +95,7 @@ class Schedule(models.Model):
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('start_page:detail', kwargs={'pk': self.pk})
+        return reverse('start_page:schedules')
 
     def __str__(self):
         return self.school_year + ": " + self.name
