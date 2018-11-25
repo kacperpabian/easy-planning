@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends 'start_page/base.html' %}
 
-</body>
-</html>
+{% block body %}
+{#    <a role="button" href="{% url 'start_page:object_creation:subject-add' schedule.id %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj przedmiot</a><br><br>#}
+    <!-- Albums -->
+{#    <a role="button" href="{% url '' schedule.id %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj Przedmiot</a><br><br>#}
+    {% if all_subjects %}
+        <div class="panel panel-group col-md-offset-3 col-md-6" style="background: gray; border: none;">
+            <div class="panel-body">
+                <div class="panel panel-group" style="background: lightgray; border: none;">
+                    <div class="panel-body">
+                        <table style="width: 100%;">
+                        <tr>
+                            <th>Nazwa</th>
+                            <th>Skrócona nazwa</th>
+                            <th>Modyfikacja</th>
+                            <th>Usuń</th>
+                        </tr>
+                        {% for subject in all_subjects %}
+                            <tr>
+                                <td><input value="{{ subject.name }}"></td>
+                                <td><input value="{{ subject.short_name }}"></td>
+                                <td><a href="#" type="button" class="btn btn-info">Zmień</a></td>
+                                <td><a href="#" type="button" class="btn btn-danger">Usuń</a></td>
+                            </tr>
+                         {% endfor %}
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

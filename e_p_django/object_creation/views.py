@@ -47,6 +47,28 @@ class ScheduleDelete(generic.DeleteView):
     model = models.Schedule
     template_name = "object_delete/schedule_delete.html"
     success_url = reverse_lazy('start_page:schedules')
+
+
+class SubjectsView(generic.ListView):
+    model = models.Schedule
+    template_name = 'object_creation/subjects.html'
+    context_object_name = 'all_subjects'
+
+    def get_queryset(self):
+        schedule = models.Schedule.objects.get(id=self.kwargs.get('pk'))
+        subjects = schedule.subject_set.all()
+        return subjects
+
+
+class SubjectCreate(generic.CreateView):
+    model = models.Schedule
+    form_class = forms.SubjectForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.user_id = self.request.user.id
+        return super(SubjectCreate, self).form_valid(form)
 # class DetailView(generic.DetailView):
 #     model = models.Schedule
 #     template_name = "start_page/schedule_detail.html"
