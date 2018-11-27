@@ -52,36 +52,34 @@ class ScheduleDelete(generic.DeleteView):
 class SubjectsView(generic.ListView):
     model = models.Schedule
     template_name = 'object_creation/subjects.html'
-    context_object_name = 'all_subjects'
+    context_object_name = 'schedule'
 
     def get_queryset(self):
-        schedule = models.Schedule.objects.get(id=self.kwargs.get('pk'))
-        subjects = schedule.subject_set.all()
-        return subjects
+        return models.Schedule.objects.get(id=self.kwargs.get('pk'))
 
 
 class SubjectCreate(generic.CreateView):
-    model = models.Schedule
+    model = models.Subject
+    template_name = "object_creation/subject_add.html"
     form_class = forms.SubjectForm
 
     def form_valid(self, form):
         obj = form.save(commit=False)
         obj.created_by = self.request.user
-        obj.user_id = self.request.user.id
+        obj.schedule_id = self.kwargs['pk']
         return super(SubjectCreate, self).form_valid(form)
-# class DetailView(generic.DetailView):
-#     model = models.Schedule
-#     template_name = "start_page/schedule_detail.html"
-#
-#
-# class SubjectCreate(CreateView):
-#     model = models.Schedule
-#     fields = ['name', 'cycle', 'school_year', 'school_name', 'description', 'weekend_days', 'start_time',
-#               'max_lessons']
-#
-#     def form_valid(self, form):
-#         obj = form.save(commit=False)
-#         obj.created_by = self.request.user
-#         obj.user_id = self.request.user.id
-#         return super(ScheduleCreate, self).form_valid(form)
 
+
+class SubjectDelete(generic.DeleteView):
+    model = models.Subject
+    template_name = "object_delete/schedule_delete.html"
+
+    def get_success_url(self):
+        schedule_id = self.object.schedule_id
+        return reverse_lazy('start_page:object_creation:subjects', kwargs={'pk': schedule_id})
+
+
+class SubjectUpdate(generic.UpdateView):
+    model = models.Subject
+    form_class = forms.SubjectForm
+    template_name_suffix = '_update_form'

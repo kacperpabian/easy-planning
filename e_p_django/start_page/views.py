@@ -14,7 +14,7 @@ class UserLoginView(generic.View):
     template_name = 'registration/home.html'
 
     def get(self, request):
-        form = self.form_class(None)
+        form = self.form_class()
         user = get_user(request)
         if user.is_authenticated:
             return redirect('start_page:schedules')
@@ -23,7 +23,7 @@ class UserLoginView(generic.View):
 
     def post(self, request):
         if request.POST.get('submit') == 'sign-in':
-            form = self.form_class(None)
+            form = self.form_class()
             username = request.POST['username']
             password = request.POST['password']
             user = authenticate(username=username, password=password)
@@ -46,7 +46,7 @@ class UserRegisterView(generic.View):
 
     # display blank form
     def get(self, request):
-        form = self.form_class(None)
+        form = self.form_class()
 
         return render(request, self.template_name, {'form': form})
 
