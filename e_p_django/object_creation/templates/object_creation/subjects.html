@@ -9,7 +9,7 @@
             <div class="panel-body">
                 <div class="panel panel-group" style="background: lightgray; border: none;">
                     <div class="panel-body">
-                        <table class="table-condensed" style="width: 100%;">
+                        <table class="table-condensed table-hover" style="width: 100%;">
                         <tr>
                             <th>Nazwa</th>
                             <th>Skrócona nazwa</th>
@@ -18,7 +18,7 @@
                         </tr>
                         {% for subject in schedule.subject_set.all %}
                             <tr>
-                                <td><input id="name{{ subject.id }}" value="{{ subject.name }}"></td>
+                                <td><p>{{ subject.name }}</p></td>
                                 <td><input id="short_name{{ subject.id }}" value="{{ subject.short_name }}"></td>
                                 <td><a href="{% url 'start_page:object_creation:subject-update' subject.id %}"
                                        type="button" class="btn btn-info fas fa-edit"></a></td>
