@@ -219,7 +219,7 @@ class TeacherDelete(generic.DeleteView):
 
     def get_success_url(self):
         schedule_id = self.object.schedule_id
-        return reverse_lazy('start_page:object_creation:rooms', kwargs={'pk': schedule_id})
+        return reverse_lazy('start_page:object_creation:teachers', kwargs={'pk': schedule_id})
 
 
 class TeacherUpdate(generic.UpdateView):
@@ -244,4 +244,73 @@ class TeacherDetails(generic.UpdateView):
     model = models.Teacher
     form_class = forms.TeacherForm
     template_name = "object_edit/teacher_edit.html"
+    template_name_suffix = '_update_form'
+
+
+class ClassCreate(generic.CreateView):
+    model = models.Class
+    template_name = "object_creation/class_add.html"
+    form_class = forms.ClassForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.schedule_id = self.kwargs['pk']
+        return super(ClassCreate, self).form_valid(form)
+
+
+class ClassView(SingleTableView):
+    model = models.Class
+    template_name = 'object_creation/classes.html'
+    table_class = tables.ClassTable
+    paginator_class = LazyPaginator
+
+    def get_context_data(self, **kwargs):
+        context = super(ClassView, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        schedule = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return models.Class.objects.filter(schedule_id=schedule.id)
+
+
+class ClassDelete(generic.DeleteView):
+    model = models.Class
+    template_name = "object_delete/class_delete.html"
+
+    def get_context_data(self, **kwargs):
+        schedule_id = self.object.schedule_id
+        context = super(ClassDelete, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=schedule_id)
+        context['class'] = get_object_or_404(models.Class, id=self.kwargs.get('pk'))
+        return context
+
+    def get_success_url(self):
+        schedule_id = self.object.schedule_id
+        return reverse_lazy('start_page:object_creation:classes', kwargs={'pk': schedule_id})
+
+
+class ClassUpdate(generic.UpdateView):
+    model = models.Class
+    form_class = forms.ClassForm
+    template_name = "object_edit/class_edit.html"
+    template_name_suffix = '_update_form'
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, instance=self.get_object())
+        if form.is_valid():
+            if form.changed_data:
+                schedule = form.save(commit=False)
+                schedule.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': form})
+
+
+class ClassDetails(generic.UpdateView):
+    model = models.Class
+    form_class = forms.ClassForm
+    template_name = "object_edit/class_edit.html"
     template_name_suffix = '_update_form'

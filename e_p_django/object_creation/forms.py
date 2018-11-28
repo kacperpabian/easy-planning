@@ -4,7 +4,8 @@ from start_page.models import (
     Schedule,
     Subject,
     Room,
-    Teacher
+    Teacher,
+    Class
 )
 from django import forms
 
@@ -58,3 +59,14 @@ class TeacherForm(forms.ModelForm):
             'surname': 'Nazwisko'
         }
         fields = ['name', 'surname']
+
+
+class ClassForm(forms.ModelForm):
+
+    class Meta:
+        model = Class
+        labels = {
+            'name': 'Nazwa',
+            'short_name': 'Skrócona nazwa'
+        }
+        fields = ['name', 'short_name']
