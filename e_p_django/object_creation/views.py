@@ -158,3 +158,21 @@ class RoomDelete(generic.DeleteView):
     def get_success_url(self):
         schedule_id = self.object.schedule_id
         return reverse_lazy('start_page:object_creation:rooms', kwargs={'pk': schedule_id})
+
+
+class RoomUpdate(generic.UpdateView):
+    model = models.Room
+    form_class = forms.RoomForm
+    template_name = "object_edit/room_edit.html"
+    template_name_suffix = '_update_form'
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, instance=self.get_object())
+        if form.is_valid():
+            if form.changed_data:
+                schedule = form.save(commit=False)
+                schedule.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': form})

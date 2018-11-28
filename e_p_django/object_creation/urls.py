@@ -11,5 +11,7 @@ urlpatterns = [
     path('subjects/update-subject/<int:pk>/', views.SubjectUpdate.as_view(), name='subject-update'),
     path('rooms/<int:pk>/', views.RoomsView.as_view(), name='rooms'),
     path('rooms/create-room/<int:pk>/', views.RoomCreate.as_view(), name='room-create'),
-    path('rooms/del-room/<int:pk>/', views.RoomDelete.as_view(), name='room-delete')
+    path('rooms/del-room/<int:pk>/', views.RoomDelete.as_view(), name='room-delete'),
+    path('rooms/update-room/<int:pk>/', views.RoomUpdate.as_view(), name='room-update')
+
 ]
