@@ -1,7 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
-from django_tables2 import RequestConfig, SingleTableView
+from django_tables2 import (
+    SingleTableView,
+    LazyPaginator)
 # noinspection PyUnresolvedReferences
 from start_page import models
 from . import forms, tables
@@ -10,7 +12,7 @@ from django.urls import reverse_lazy
 
 class ScheduleChange(generic.UpdateView):
     form_class = forms.ScheduleForm
-    template_name = 'object_creation/change_schedule.html'
+    template_name = 'object_edit/schedule_edit.html'
     template_name_suffix = '_update_form'
 
     def get_queryset(self):
@@ -54,6 +56,7 @@ class SubjectsView(SingleTableView):
     model = models.Subject
     template_name = 'object_creation/subjects.html'
     table_class = tables.SubjectTable
+    paginator_class = LazyPaginator
 
     def get_context_data(self, **kwargs):
         context = super(SubjectsView, self).get_context_data(**kwargs)
@@ -80,7 +83,14 @@ class SubjectCreate(generic.CreateView):
 class SubjectDelete(generic.DeleteView):
     model = models.Subject
     template_name = "object_delete/subject_delete.html"
-    context_object_name = 'subject'
+    # context_object_name = 'subject'
+
+    def get_context_data(self, **kwargs):
+        schedule_id = self.object.schedule_id
+        context = super(SubjectDelete, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=schedule_id)
+        context['subject'] = get_object_or_404(models.Subject, id=self.kwargs.get('pk'))
+        return context
 
     def get_success_url(self):
         schedule_id = self.object.schedule_id
@@ -90,4 +100,16 @@ class SubjectDelete(generic.DeleteView):
 class SubjectUpdate(generic.UpdateView):
     model = models.Subject
     form_class = forms.SubjectForm
+    template_name = "object_edit/subject_edit.html"
     template_name_suffix = '_update_form'
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, instance=self.get_object())
+        if form.is_valid():
+            if form.changed_data:
+                schedule = form.save(commit=False)
+                schedule.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': form})
