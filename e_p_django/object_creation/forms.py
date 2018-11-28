@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 from start_page.models import (
     Schedule,
     Subject,
-    Room
+    Room,
+    Teacher
 )
 from django import forms
 
@@ -46,3 +47,14 @@ class RoomForm(forms.ModelForm):
             'capacity': 'Liczba miejsc'
         }
         fields = ['room_number', 'capacity']
+
+
+class TeacherForm(forms.ModelForm):
+
+    class Meta:
+        model = Teacher
+        labels = {
+            'name': 'Imię',
+            'surname': 'Nazwisko'
+        }
+        fields = ['name', 'surname']

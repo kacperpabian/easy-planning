@@ -4,3 +4,5 @@ from . import models
 admin.site.register(models.Schedule)
 admin.site.register(models.Subject)
 admin.site.register(models.Room)
+admin.site.register(models.Teacher)
+admin.site.register(models.Class)

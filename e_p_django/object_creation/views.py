@@ -176,3 +176,72 @@ class RoomUpdate(generic.UpdateView):
             else:
                 messages.warning(request, "Nic nie zostało zmienione.")
         return render(request, self.template_name, {'form': form})
+
+
+class TeacherCreate(generic.CreateView):
+    model = models.Teacher
+    template_name = "object_creation/teacher_add.html"
+    form_class = forms.TeacherForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.schedule_id = self.kwargs['pk']
+        return super(TeacherCreate, self).form_valid(form)
+
+
+class TeacherView(SingleTableView):
+    model = models.Teacher
+    template_name = 'object_creation/teachers.html'
+    table_class = tables.TeacherTable
+    paginator_class = LazyPaginator
+
+    def get_context_data(self, **kwargs):
+        context = super(TeacherView, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        schedule = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return models.Teacher.objects.filter(schedule_id=schedule.id)
+
+
+class TeacherDelete(generic.DeleteView):
+    model = models.Teacher
+    template_name = "object_delete/teacher_delete.html"
+
+    def get_context_data(self, **kwargs):
+        schedule_id = self.object.schedule_id
+        context = super(TeacherDelete, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=schedule_id)
+        context['teacher'] = get_object_or_404(models.Teacher, id=self.kwargs.get('pk'))
+        return context
+
+    def get_success_url(self):
+        schedule_id = self.object.schedule_id
+        return reverse_lazy('start_page:object_creation:rooms', kwargs={'pk': schedule_id})
+
+
+class TeacherUpdate(generic.UpdateView):
+    model = models.Teacher
+    form_class = forms.TeacherForm
+    template_name = "object_edit/teacher_edit.html"
+    template_name_suffix = '_update_form'
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, instance=self.get_object())
+        if form.is_valid():
+            if form.changed_data:
+                schedule = form.save(commit=False)
+                schedule.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': form})
+
+
+class TeacherDetails(generic.UpdateView):
+    model = models.Teacher
+    form_class = forms.TeacherForm
+    template_name = "object_edit/teacher_edit.html"
+    template_name_suffix = '_update_form'

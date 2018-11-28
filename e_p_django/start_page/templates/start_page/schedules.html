@@ -4,17 +4,17 @@
     <a role="button" href="{% url 'start_page:schedule-add' %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj plan</a><br><br>
     <!-- Albums -->
     {% if all_schedules %}
-        <div class="panel panel-group" style="background: gray; border: none;">
+        <div class="panel panel-group" style="background: lightskyblue; border: none;">
             <div class="panel-body">
                 {% for schedule in all_schedules %}
-                    <div class="panel panel-group" style="background: lightgray; border: none;">
+                    <div class="panel panel-group" style="background: whitesmoke; border: none;">
                         <div class="panel-body col-md-offset-2">
                             <div style="background: lightgray; border: none;">
                                 <a href="{% url 'start_page:object_creation:schedule-change' schedule.id %}" class="navbar-brand col-md-1 schedule-name">{{ schedule.name }}</a>
                                 <a href="{% url 'start_page:object_creation:subjects' schedule.id %}" type="button" class="btn btn-info col-md-1">Zajęcia</a>
                                 <a href="{% url 'start_page:object_creation:rooms' schedule.id %}" type="button" class="btn btn-info col-md-1">Pokoje</a>
-                                <a href="#" type="button" class="btn btn-info col-md-1">Nauczyciele</a>
-                                <a href="#" type="button" class="btn btn-info col-md-1">Grupy</a>
+                                <a href="{% url 'start_page:object_creation:teachers' schedule.id %}" type="button" class="btn btn-info col-md-1">Nauczyciele</a>
+                                <a href="#" type="button" class="btn btn-info col-md-1">Klasy</a>
                                 <a href="#" type="button" class="btn btn-info col-md-1">Lekcje</a>
                                 <a href="#" type="button" class="btn btn-primary col-md-1">Widok</a>
                                 <a href="{% url 'start_page:object_creation:schedule-delete' schedule.id %}" type="button" class="btn btn-danger col-md-1">Usuń</a>
