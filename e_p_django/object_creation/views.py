@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
+from django_tables2 import RequestConfig, SingleTableView
 # noinspection PyUnresolvedReferences
 from start_page import models
-from . import forms
+from . import forms, tables
 from django.urls import reverse_lazy
 
 
@@ -49,13 +50,19 @@ class ScheduleDelete(generic.DeleteView):
     success_url = reverse_lazy('start_page:schedules')
 
 
-class SubjectsView(generic.ListView):
-    model = models.Schedule
+class SubjectsView(SingleTableView):
+    model = models.Subject
     template_name = 'object_creation/subjects.html'
-    context_object_name = 'schedule'
+    table_class = tables.SubjectTable
+
+    def get_context_data(self, **kwargs):
+        context = super(SubjectsView, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return context
 
     def get_queryset(self):
-        return models.Schedule.objects.get(id=self.kwargs.get('pk'))
+        schedule = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return models.Subject.objects.filter(schedule_id=schedule.id)
 
 
 class SubjectCreate(generic.CreateView):
@@ -72,7 +79,8 @@ class SubjectCreate(generic.CreateView):
 
 class SubjectDelete(generic.DeleteView):
     model = models.Subject
-    template_name = "object_delete/schedule_delete.html"
+    template_name = "object_delete/subject_delete.html"
+    context_object_name = 'subject'
 
     def get_success_url(self):
         schedule_id = self.object.schedule_id
