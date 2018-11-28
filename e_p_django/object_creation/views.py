@@ -3,7 +3,8 @@ from django.views import generic
 from django.contrib import messages
 from django_tables2 import (
     SingleTableView,
-    LazyPaginator)
+    LazyPaginator
+)
 # noinspection PyUnresolvedReferences
 from start_page import models
 from . import forms, tables
@@ -113,3 +114,47 @@ class SubjectUpdate(generic.UpdateView):
             else:
                 messages.warning(request, "Nic nie zostało zmienione.")
         return render(request, self.template_name, {'form': form})
+
+
+class RoomCreate(generic.CreateView):
+    model = models.Room
+    template_name = "object_creation/room_add.html"
+    form_class = forms.RoomForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.schedule_id = self.kwargs['pk']
+        return super(RoomCreate, self).form_valid(form)
+
+
+class RoomsView(SingleTableView):
+    model = models.Room
+    template_name = 'object_creation/rooms.html'
+    table_class = tables.RoomsTable
+    paginator_class = LazyPaginator
+
+    def get_context_data(self, **kwargs):
+        context = super(RoomsView, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return context
+
+    def get_queryset(self):
+        schedule = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
+        return models.Room.objects.filter(schedule_id=schedule.id)
+
+
+class RoomDelete(generic.DeleteView):
+    model = models.Room
+    template_name = "object_delete/room_delete.html"
+
+    def get_context_data(self, **kwargs):
+        schedule_id = self.object.schedule_id
+        context = super(RoomDelete, self).get_context_data(**kwargs)
+        context['schedule'] = get_object_or_404(models.Schedule, id=schedule_id)
+        context['room'] = get_object_or_404(models.Room, id=self.kwargs.get('pk'))
+        return context
+
+    def get_success_url(self):
+        schedule_id = self.object.schedule_id
+        return reverse_lazy('start_page:object_creation:rooms', kwargs={'pk': schedule_id})

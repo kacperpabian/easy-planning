@@ -78,6 +78,9 @@ class Room(models.Model):
     room_number = models.CharField(unique=True, max_length=10)
     capacity = models.IntegerField()
 
+    def get_absolute_url(self):
+        return reverse('start_page:object_creation:rooms', kwargs={'pk': self.schedule_id})
+
     class Meta:
         db_table = 'room'
 

@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User
 # noinspection PyUnresolvedReferences
-from start_page.models import Schedule, Subject
+from start_page.models import (
+    Schedule,
+    Subject,
+    Room
+)
 from django import forms
 
 
@@ -31,3 +35,14 @@ class SubjectForm(forms.ModelForm):
             'short_name': 'Skrócona nazwa'
         }
         fields = ['name', 'short_name']
+
+
+class RoomForm(forms.ModelForm):
+
+    class Meta:
+        model = Room
+        labels = {
+            'room_number': 'Numer pokoju',
+            'capacity': 'Liczba miejsc'
+        }
+        fields = ['room_number', 'capacity']
