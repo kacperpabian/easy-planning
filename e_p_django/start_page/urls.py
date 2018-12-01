@@ -7,7 +7,6 @@ urlpatterns = [
     path('login', views.UserLoginView.as_view(), name='login'),
     path('', views.ScheduleView.as_view(), name='schedules'),
     # /schedules/schedule/add/
-    path('schedule/add/', views.ScheduleCreate.as_view(), name='schedule-add'),
     path('details/', include('object_creation.urls')),
     path('profile/', include('user_profile.urls'))
 ]

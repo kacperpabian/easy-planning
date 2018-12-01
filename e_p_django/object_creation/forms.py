@@ -5,7 +5,8 @@ from start_page.models import (
     Subject,
     Room,
     Teacher,
-    Class
+    Class,
+    SchoolBreakes
 )
 from django import forms
 
@@ -70,3 +71,14 @@ class ClassForm(forms.ModelForm):
             'short_name': 'Skrócona nazwa'
         }
         fields = ['name', 'short_name']
+
+
+class SchoolBreakesForm(forms.ModelForm):
+
+    class Meta:
+        model = SchoolBreakes
+        labels = {
+            'lesson_number': 'Numer zajęć',
+            'break_time': 'Czas przerwy (minuty)'
+        }
+        fields = ['lesson_number', 'break_time']

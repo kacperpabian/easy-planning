@@ -11,6 +11,27 @@ from . import forms, tables
 from django.urls import reverse_lazy
 
 
+def _get_form(request, formcls, prefix):
+    data = request.POST if prefix in request.POST else None
+    return formcls(data, prefix=prefix)
+
+
+# class BreakesScheduleCreate(generic.TemplateView):
+
+
+
+class ScheduleCreate(generic.CreateView):
+    model = models.Schedule
+    template_name = 'object_creation/schedule_add.html'
+    form_class = forms.ScheduleForm
+
+    def form_valid(self, form):
+        obj = form.save(commit=False)
+        obj.created_by = self.request.user
+        obj.user_id = self.request.user.id
+        return super(ScheduleCreate, self).form_valid(form)
+
+
 class ScheduleChange(generic.UpdateView):
     form_class = forms.ScheduleForm
     template_name = 'object_edit/schedule_edit.html'

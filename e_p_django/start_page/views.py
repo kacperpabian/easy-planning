@@ -81,14 +81,3 @@ class ScheduleView(generic.ListView):
     def get_queryset(self):
         user = self.request.user
         return models.Schedule.objects.filter(user_id=user.id)
-
-
-class ScheduleCreate(generic.CreateView):
-    model = models.Schedule
-    form_class = ScheduleForm
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.created_by = self.request.user
-        obj.user_id = self.request.user.id
-        return super(ScheduleCreate, self).form_valid(form)

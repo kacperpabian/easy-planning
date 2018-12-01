@@ -1,7 +1,7 @@
 {% extends 'start_page/base.html' %}
 
 {% block body %}
-    <a role="button" href="{% url 'start_page:schedule-add' %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj plan</a><br><br>
+    <a role="button" href="{% url 'start_page:object_creation:schedule-add' %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj plan</a><br><br>
     <!-- Albums -->
     {% if all_schedules %}
         <div class="panel panel-group" style="background: lightskyblue; border: none;">
