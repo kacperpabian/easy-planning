@@ -1,0 +1,15 @@
+{% extends 'registration/home_base.html' %}
+{% block title %}Login{% endblock %}
+
+{% block body %}
+<h2>Login</h2>
+    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% include 'start_page/form_template.html' %}
+        <div class="form-group">
+            <div class="col-md-offset-5 col-sm-offset-2 col-md-2">
+                <button type="submit" class="btn btn-success" value="sign-in">Zaloguj</button>
+            </div>
+        </div>
+    </form>
+{% endblock %}

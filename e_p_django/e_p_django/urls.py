@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.views.generic.base import TemplateView
+# noinspection PyUnresolvedReferences
+from start_page.views import UserLoginView
 
 urlpatterns = [
+    path('schedules/', include('start_page.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
-    path('', TemplateView.as_view(template_name='home.html'), name='home'),
+    # path('', TemplateView.as_view(template_name='registration/home.html'), name='home')
+    path('', UserLoginView.as_view(), name='home')
 
 ]

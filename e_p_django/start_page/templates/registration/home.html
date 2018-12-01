@@ -1,0 +1,10 @@
+{% extends 'registration/home_base.html' %}
+{% block title %}Home{% endblock %}
+
+{% block body %}
+    <br>
+    <div class="navbar-brand home-logo col-md-offset-4 col-md-4 font-size-logo text-center">Proste Planowanie</div>
+    {% if user.is_authenticated %}
+        <a href={% url "start_page:index" %}> Przejdz tutaj </a>
+    {% endif %}
+{% endblock %}
