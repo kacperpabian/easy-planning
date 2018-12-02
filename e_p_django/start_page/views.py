@@ -17,7 +17,7 @@ class UserLoginView(generic.View):
         form = self.form_class()
         user = get_user(request)
         if user.is_authenticated:
-            return redirect('start_page:schedules')
+            return redirect('start_page:schools')
         else:
             return render(request, self.template_name, {'form': form})
 
@@ -30,7 +30,7 @@ class UserLoginView(generic.View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('start_page:schedules')
+                    return redirect('start_page:schools')
             else:
                 messages.error(request, "Błędny login bądź hasło")
 
@@ -68,16 +68,26 @@ class UserRegisterView(generic.View):
             if user is not None:
                 if user.is_active:
                     login(request, user)
-                    return redirect('start_page:schedules')
+                    return redirect('start_page:schools')
 
         return render(request, self.template_name, {'form': form})
 
 
-class ScheduleView(generic.ListView):
-    model = models.Schedule
-    template_name = 'start_page/schedules.html'
-    context_object_name = 'all_schedules'
+class SchoolView(generic.ListView):
+    model = models.School
+    template_name = 'start_page/schools.html'
+    context_object_name = 'all_schools'
 
     def get_queryset(self):
         user = self.request.user
-        return models.Schedule.objects.filter(user_id=user.id)
+        return models.School.objects.filter(user=user.id)
+
+
+# class ScheduleView(generic.ListView):
+#     model = models.Schedule
+#     template_name = 'start_page/schedules.html'
+#     context_object_name = 'all_schedules'
+#
+#     def get_queryset(self):
+#         user = self.request.user
+#         return models.Schedule.objects.filter(school_id=user.id)

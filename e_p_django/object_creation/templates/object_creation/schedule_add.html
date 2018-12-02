@@ -8,22 +8,22 @@
 {% block post-button %}
     Dodaj
 {% endblock %}
-{% block outside-panel-class %}
-    class="panel panel-group col-md-offset-1 col-md-10"
-{% endblock %}
-{% block inside-panel-class %}
-    class="col-md-offset-1 col-md-4"
-{% endblock %}
-{% block form-template %}
-    {% load widget_tweaks %}
-    {% for field in form %}
-        <div class="form-group">
-            <label class="control-label">{{ field.label_tag }}</label>
-            <div>{{ field|add_class:'form-control' }}</div>
-        </div>
-{% endfor %}
-{% endblock %}
-{% block additional-info %}
+{#{% block outside-panel-class %}#}
+{#    class="panel panel-group col-md-offset-1 col-md-10"#}
+{#{% endblock %}#}
+{#{% block inside-panel-class %}#}
+{#    class="col-md-offset-1 col-md-4"#}
+{#{% endblock %}#}
+{#{% block form-template %}#}
+{#    {% load widget_tweaks %}#}
+{#    {% for field in form %}#}
+{#        <div class="form-group">#}
+{#            <label class="control-label">{{ field.label_tag }}</label>#}
+{#            <div>{{ field|add_class:'form-control' }}</div>#}
+{#        </div>#}
+{#{% endfor %}#}
+{#{% endblock %}#}
+{#{% block additional-info %}#}
 {#        <div class="col-md-offset-2 col-md-4">#}
 {#            <div class="panel-body">#}
 {#                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">#}
@@ -32,4 +32,4 @@
 {#                </form>#}
 {#            </div>#}
 {#        </div>#}
-{% endblock %}
+{#{% endblock %}#}

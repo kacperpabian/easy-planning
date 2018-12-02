@@ -6,9 +6,27 @@ from start_page.models import (
     Room,
     Teacher,
     Class,
-    SchoolBreakes
+    SchoolBreakes,
+    School
 )
 from django import forms
+
+
+class SchoolForm(forms.ModelForm):
+
+    class Meta:
+        labels = {
+            'cycle': 'Cykl',
+            'school_year': 'Rok szkolny',
+            'school_name': 'Nazwa szkoły',
+            'description': 'Opis',
+            'weekend_days': 'Dni weekendu',
+            'start_time': 'Godzina rozpoczęcia zajęć',
+            'max_lessons': 'Maksymalna liczba zajęć w ciągu dnia'
+        }
+        model = School
+        fields = ['school_year', 'school_name', 'cycle',
+                  'weekend_days', 'start_time', 'max_lessons', 'description']
 
 
 class ScheduleForm(forms.ModelForm):
@@ -16,17 +34,10 @@ class ScheduleForm(forms.ModelForm):
     class Meta:
         labels = {
             'name': 'Nazwa planu',
-            'cycle': 'Cykl',
-            'school_year': 'Rok planu',
-            'school_name': 'Nazwa szkoły',
-            'description': 'Opis',
-            'weekend_days': 'Dni weekendu',
-            'start_time': 'Godzina rozpoczęcia zajęć',
-            'max_lessons': 'Maksymalna liczba zajęć w ciągu dnia'
+            'description': 'Opis'
         }
         model = Schedule
-        fields = ['name', 'school_year', 'school_name', 'cycle',
-                  'weekend_days', 'start_time', 'max_lessons', 'description']
+        fields = ['name', 'description']
 
 
 class SubjectForm(forms.ModelForm):

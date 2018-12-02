@@ -15,34 +15,37 @@ class AuthUser(models.Model):
     is_superuser = models.IntegerField()
     username = models.CharField(unique=True, max_length=150)
     first_name = models.CharField(max_length=30)
-    email = models.CharField(unique=True, max_length=254)
     last_name = models.CharField(max_length=150)
+    email = models.CharField(max_length=254)
     is_staff = models.IntegerField()
     is_active = models.IntegerField()
     date_joined = models.DateTimeField()
 
     class Meta:
+        managed = False
         db_table = 'auth_user'
 
 
 class Class(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
+    school = models.ForeignKey('School', on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     name = models.CharField(max_length=45)
-    short_name = models.CharField(max_length=45, blank=True, null=True)
+    short_name = models.CharField(max_length=45)
 
     def get_absolute_url(self):
-        return reverse('start_page:object_creation:classes', kwargs={'pk': self.schedule_id})
+        return reverse('start_page:object_creation:classes', kwargs={'pk': self.school_id})
 
     class Meta:
+        managed = False
         db_table = 'class'
 
 
 class ClassGroup(models.Model):
-    class_field = models.ForeignKey(Class, on_delete=models.CASCADE, db_column='class_id')  # Field renamed because it was a Python reserved word.
+    class_field = models.ForeignKey(Class, models.DO_NOTHING, db_column='class_id')  # Field renamed because it was a Python reserved word.
     group = models.ForeignKey('Group', on_delete=models.CASCADE)
 
     class Meta:
+        managed = False
         db_table = 'class_group'
 
 
@@ -53,6 +56,7 @@ class ClassTeacher(models.Model):
     tutor = models.IntegerField()
 
     class Meta:
+        managed = False
         db_table = 'class_teacher'
 
 
@@ -60,92 +64,107 @@ class Group(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
 
     class Meta:
+        managed = False
         db_table = 'group'
 
 
 class Lesson(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     class_field = models.ForeignKey(Class, on_delete=models.CASCADE, db_column='class_id')  # Field renamed because it was a Python reserved word.
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, models.DO_NOTHING)
     subject = models.ForeignKey('Subject', on_delete=models.CASCADE, db_column='subject_ID')  # Field name made lowercase.
-    room = models.ForeignKey('Room', on_delete=models.CASCADE, db_column='room_ID')  # Field name made lowercase.
+    room = models.ForeignKey('Room', models.DO_NOTHING, db_column='room_ID')  # Field name made lowercase.
+    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
     lesson_number = models.IntegerField()
 
     class Meta:
+        managed = False
         db_table = 'lesson'
 
 
 class Room(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey('Schedule', on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
+    school = models.ForeignKey('School', on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     room_number = models.CharField(unique=True, max_length=10)
     capacity = models.IntegerField()
 
     def get_absolute_url(self):
-        return reverse('start_page:object_creation:rooms', kwargs={'pk': self.schedule_id})
+        return reverse('start_page:object_creation:rooms', kwargs={'pk': self.school_id})
 
     class Meta:
+        managed = False
         db_table = 'room'
 
 
 class Schedule(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    school = models.ForeignKey('School', on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     name = models.CharField(max_length=45)
-    cycle = models.IntegerField()
-    school_year = models.CharField(max_length=45)
-    school_name = models.CharField(max_length=45)
     description = models.CharField(max_length=45, blank=True, null=True)
-    weekend_days = models.CharField(max_length=45)
-    start_time = models.CharField(max_length=45)
-    max_lessons = models.CharField(max_length=45)
-    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE)
 
     def get_absolute_url(self):
-        return reverse('start_page:schedules')
-
-    def __str__(self):
-        return self.school_year + ": " + self.name
+        return reverse('start_page:schools')
 
     class Meta:
+        managed = False
         db_table = 'schedule'
+
+
+class School(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, db_column='user_id')
+    school_year = models.CharField(max_length=20)
+    school_name = models.CharField(max_length=20)
+    description = models.CharField(max_length=60, blank=True, null=True)
+    weekend_days = models.CharField(max_length=45)
+    start_time = models.CharField(max_length=20)
+    max_lessons = models.IntegerField()
+    cycle = models.IntegerField()
+
+    def get_absolute_url(self):
+        return reverse('start_page:schools')
+
+    class Meta:
+        managed = False
+        db_table = 'school'
 
 
 class SchoolBreakes(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     lesson_number = models.IntegerField()
     break_time = models.IntegerField()
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
 
     class Meta:
+        managed = False
         db_table = 'school_breakes'
 
 
 class Subject(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
     name = models.CharField(unique=True, max_length=45)
-    short_name = models.CharField(max_length=45, blank=True, null=True)
+    short_name = models.CharField(max_length=45)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
 
     def get_absolute_url(self):
-        return reverse('start_page:object_creation:subjects', kwargs={'pk': self.schedule_id})
-
-    def __str__(self):
-        return self.name
+        return reverse('start_page:object_creation:subjects', kwargs={'pk': self.school_id})
 
     class Meta:
+        managed = False
         db_table = 'subject'
 
 
 class Teacher(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
+    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)
 
     def get_absolute_url(self):
-        return reverse('start_page:object_creation:teachers', kwargs={'pk': self.schedule_id})
+        return reverse('start_page:object_creation:teachers', kwargs={'pk': self.school_id})
 
     class Meta:
+        managed = False
         db_table = 'teacher'
 
 
@@ -154,12 +173,14 @@ class TeacherLesson(models.Model):
     lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE)
 
     class Meta:
+        managed = False
         db_table = 'teacher_lesson'
 
 
 class TeacherSubject(models.Model):
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE, db_column='teacher_ID')  # Field name made lowercase.
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_column='subject_ID')  # Field name made lowercase.
+    teacher = models.ForeignKey(Teacher, models.DO_NOTHING, db_column='teacher_ID')  # Field name made lowercase.
+    subject = models.ForeignKey(Subject, models.DO_NOTHING, db_column='subject_ID')  # Field name made lowercase.
 
     class Meta:
+        managed = False
         db_table = 'teacher_subject'
