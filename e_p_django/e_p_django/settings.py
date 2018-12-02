@@ -138,5 +138,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'start_page/static/')
-LOGIN_REDIRECT_URL = '/schedules'
+LOGIN_REDIRECT_URL = '/schools'
 LOGOUT_REDIRECT_URL = '/'

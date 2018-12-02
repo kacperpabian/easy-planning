@@ -3,9 +3,13 @@ from django.urls import path
 app_name = 'object_creation'
 
 urlpatterns = [
-    path('change-schedule/<int:pk>/', views.ScheduleChange.as_view(), name='schedule-change'),
-    path('delete-schedule/<int:pk>/', views.ScheduleDelete.as_view(), name='schedule-delete'),
-    path('add/', views.ScheduleCreate.as_view(), name='schedule-add'),
+    # path('change-schedule/<int:pk>/', views.ScheduleChange.as_view(), name='schedule-change'),
+    # path('delete-schedule/<int:pk>/', views.ScheduleDelete.as_view(), name='schedule-delete'),
+    # path('add/', views.ScheduleCreate.as_view(), name='schedule-add'),
+    path('create-school/', views.SchoolCreate.as_view(), name='school-create'),
+    path('update-school/<int:pk>/', views.SchoolUpdate.as_view(), name='school-update'),
+    path('del-school/<int:pk>/', views.SchoolDelete.as_view(), name='school-delete'),
+    path('schedule/create-schedule/<int:pk>/', views.ScheduleCreate.as_view(), name='schedule-create'),
     path('subjects/<int:pk>/', views.SubjectsView.as_view(), name='subjects'),
     path('subjects/add-subject/<int:pk>/', views.SubjectCreate.as_view(), name='subject-add'),
     path('subjects/del-subject/<int:pk>/', views.SubjectDelete.as_view(), name='subject-delete'),

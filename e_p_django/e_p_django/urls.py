@@ -19,7 +19,7 @@ from django.urls import path, include
 from start_page.views import UserLoginView
 
 urlpatterns = [
-    path('schedules/', include('start_page.urls')),
+    path('schools/', include('start_page.urls')),
     path('admin/', admin.site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     # path('', TemplateView.as_view(template_name='registration/home.html'), name='home')
