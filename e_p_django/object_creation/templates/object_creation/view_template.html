@@ -1,9 +1,7 @@
 {% extends 'start_page/base.html' %}
 {% load django_tables2 %}
 {% block body %}
-    <!-- Albums -->
     <a role="button" href="{% block href-add %}{% endblock %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">{% block add-button %}{% endblock %}</a><br><br>
-{#    {% if schedule.subject_set %}#}
         <div class="panel panel-group col-md-offset-3 col-md-6"
              style="background: lightskyblue; border: none;">
             <div class="panel-body">
@@ -15,5 +13,4 @@
                 </div>
             </div>
         </div>
-{#    {% endif %}#}
 {% endblock %}
