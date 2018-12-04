@@ -13,7 +13,7 @@ pip install pipenv w konsoli (posiadając już zainstalowanego Pythona).</p>
 <p>Kolejnymi krokami będzie następująca sekwencja poleceń w konsoli:</p>
 <ul>
 <li>cd (wybrany folder na zapisanie projektu na dysku)</li>
-<li>git clone https://github.com/pypa/pipenv.git</li>
+<li>git clone https://github.com/kacperpabian/easy-planning.git</li>
 <li>cd easy-planning</li>
 <li>pipenv install</li>
 </ul>
