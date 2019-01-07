@@ -114,7 +114,7 @@ class School(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, db_column='user_id')
     school_year = models.CharField(max_length=20)
-    school_name = models.CharField(max_length=20)
+    school_name = models.CharField(max_length=100)
     description = models.CharField(max_length=60, blank=True, null=True)
     weekend_days = models.CharField(max_length=45)
     start_time = models.CharField(max_length=20)

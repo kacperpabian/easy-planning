@@ -1,14 +1,17 @@
 {% extends 'start_page/base.html' %}
-
+{% load django_tables2 %}
 {% block body %}
     <a role="button" href="{% url 'start_page:object_creation:school-create' %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">Dodaj szkołę</a><br><br>
     <!-- Albums -->
     {% if all_schools %}
         {% for school in all_schools %}
             <div class="panel panel-group col-md-6" style="border-color: navy; background: lightskyblue;">
+                <div class="panel-heading">
+                    <a href="{% url 'start_page:object_creation:school-update' school.id %}" class="navbar-brand schedule-name">{{ school.school_name }}</a>
+                </div>
+                <br><br>
                 <div class="panel-body">
                     <div class="row">
-                        <a href="{% url 'start_page:object_creation:school-update' school.id %}" class="navbar-brand col-md-2 schedule-name">{{ school.school_name }}</a>
                         <a href="{% url 'start_page:object_creation:schedule-create' school.id %}" type="button" class="btn btn-primary col-md-2">Dodaj plan</a>
                         <a href="{% url 'start_page:object_creation:subjects' school.id %}" type="button" class="btn btn-info col-md-2">Przedmioty</a>
                         <a href="{% url 'start_page:object_creation:rooms' school.id %}" type="button" class="btn btn-info col-md-2">Pokoje</a>
@@ -16,17 +19,12 @@
                         <a href="{% url 'start_page:object_creation:classes' school.id %}" type="button" class="btn btn-info col-md-2">Klasy</a>
                     </div>
                     {% if school %}
-                        {% for schedule in school.schedule_set.all %}
-                            <div class="panel panel-group" style="background: whitesmoke; border: none;">
-                                <div class="panel-body col-md-offset-2">
-                                    <div style="background: lightgray; border: none;">
-                                        <a href="#" type="button" class="btn btn-info col-md-1">Lekcje</a>
-                                        <a href="#" type="button" class="btn btn-primary col-md-1">Widok</a>
-{#                                        <a href="{% url 'start_page:object_creation:schedule-delete' school.id %}" type="button" class="btn btn-danger col-md-1">Usuń</a>#}
-                                    </div>
-                                </div>
+                        <div class="panel-body col-md-offset-2">
+                            <div style="background: lightgray; border: none;">
+                                <a href="#" type="button" class="btn btn-success col-md-10">Przejdź do dodawania zajęć i edytowania planów</a>
+{#                                    <a href="#" type="button" class="btn btn-primary col-md-1">Widok</a>#}
                             </div>
-                        {% endfor %}
+                        </div>
                     {% endif %}
                 <br>
                 <a href="{% url 'start_page:object_creation:school-delete' school.id %}" type="button" class="btn btn-danger fas fa-times-circle col-xs-offset-11 col-md-offset-11"></a>
