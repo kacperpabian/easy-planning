@@ -19,16 +19,40 @@ def _get_form(request, formcls, prefix):
 # class BreakesScheduleCreate(generic.TemplateView):
 
 
-class SchoolCreate(generic.CreateView):
-    model = models.School
+class SchoolCreate(generic.TemplateView):
+    # model = models.School
     template_name = 'object_creation/school_add.html'
-    form_class = forms.SchoolForm
+    school_form_class = forms.SchoolForm
+    breakes_form_class = forms.SchoolBreakesForm
 
-    def form_valid(self, form):
-        obj = form.save(commit=False)
+    def post(self, request):
+        post_data = request.POST or None
+        school_form = self.school_form_class(post_data, prefix='school_form')
+        breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
+
+        context = self.get_context_data(school_form=school_form, breakes_form=breakes_form)
+
+        if school_form.is_valid():
+            self.form_save(school_form)
+        if breakes_form.is_valid():
+            self.form_save(breakes_form)
+
+        return self.render_to_response(context)
+
+    def form_save(self, form):
+        obj = form.save()
         obj.created_by = self.request.user
         obj.user_id = self.request.user.id
-        return super(SchoolCreate, self).form_valid(form)
+        messages.success(self.request, "{} saved successfully".format(obj))
+        return obj
+
+    def get(self, request, *args, **kwargs):
+        return self.post(request, *args, **kwargs)
+    # def form_valid(self, form):
+    #     obj = form.save(commit=False)
+    #     obj.created_by = self.request.user
+    #     obj.user_id = self.request.user.id
+    #     return super(SchoolCreate, self).form_valid(form)
 
 
 class SchoolUpdate(generic.UpdateView):
@@ -87,6 +111,7 @@ class ScheduleCreate(generic.CreateView):
 class ScheduleDelete(generic.DeleteView):
     model = models.Subject
     template_name = "object_delete/schedule_delete.html"
+
     # context_object_name = 'subject'
 
     def get_context_data(self, **kwargs):
@@ -99,6 +124,7 @@ class ScheduleDelete(generic.DeleteView):
     def get_success_url(self):
         school_id = self.object.school_id
         return reverse_lazy('start_page:schools', kwargs={'pk': school_id})
+
 
 # class ScheduleChange(generic.UpdateView):
 #     form_class = forms.ScheduleForm
@@ -173,6 +199,7 @@ class SubjectCreate(generic.CreateView):
 class SubjectDelete(generic.DeleteView):
     model = models.Subject
     template_name = "object_delete/subject_delete.html"
+
     # context_object_name = 'subject'
 
     def get_context_data(self, **kwargs):

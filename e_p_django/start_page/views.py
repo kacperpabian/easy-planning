@@ -78,7 +78,6 @@ class UserRegisterView(generic.View):
 
 # class ScheduleView(generic.ListView, )
 
-
 class SchoolView(generic.TemplateView):
     model = models.School
     template_name = 'start_page/schools.html'
