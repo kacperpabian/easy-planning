@@ -2,10 +2,6 @@ from django.contrib.auth.models import User
 # noinspection PyUnresolvedReferences
 from start_page.models import (
     Schedule,
-    Subject,
-    Room,
-    Teacher,
-    Class,
     SchoolBreakes,
     School
 )
@@ -38,50 +34,6 @@ class ScheduleForm(forms.ModelForm):
         }
         model = Schedule
         fields = ['name', 'description']
-
-
-class SubjectForm(forms.ModelForm):
-
-    class Meta:
-        model = Subject
-        labels = {
-            'name': 'Nazwa przedmiotu',
-            'short_name': 'Skrócona nazwa'
-        }
-        fields = ['name', 'short_name']
-
-
-class RoomForm(forms.ModelForm):
-
-    class Meta:
-        model = Room
-        labels = {
-            'room_number': 'Numer pokoju',
-            'capacity': 'Liczba miejsc'
-        }
-        fields = ['room_number', 'capacity']
-
-
-class TeacherForm(forms.ModelForm):
-
-    class Meta:
-        model = Teacher
-        labels = {
-            'name': 'Imię',
-            'surname': 'Nazwisko'
-        }
-        fields = ['name', 'surname']
-
-
-class ClassForm(forms.ModelForm):
-
-    class Meta:
-        model = Class
-        labels = {
-            'name': 'Nazwa',
-            'short_name': 'Skrócona nazwa'
-        }
-        fields = ['name', 'short_name']
 
 
 class SchoolBreakesForm(forms.ModelForm):

@@ -1,24 +1,24 @@
 import django_tables2 as tables
-# noinspection PyUnresolvedReferences
-from start_page import models
+
+from .models import Room
 
 
-class ScheduleTable(tables.Table):
-    name = tables.Column(verbose_name='Nazwa planu')
-    description = tables.Column(verbose_name='Opis')
+class RoomsTable(tables.Table):
+    room_number = tables.Column(verbose_name='Numer pokoju')
+    capacity = tables.Column(verbose_name='Liczba miejsc')
     delete = tables.TemplateColumn(
         verbose_name='Usuń',
-        template_name='button_templates/button_delete_schedule.html'
+        template_name='rooms/button_delete_room.html'
     )
 
     edit = tables.TemplateColumn(
         verbose_name='Edytuj',
-        template_name='button_templates/button_edit_schedule.html'
+        template_name='rooms/button_edit_room.html'
     )
 
     class Meta:
-        model = models.Schedule
-        fields = ['name', 'description']
+        model = Room
+        fields = ['room_number', 'capacity']
         attrs = {
             'class': 'table-condensed align-middle',
             'style': 'border-radius: 5px; \

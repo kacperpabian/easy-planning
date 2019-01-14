@@ -1,0 +1,46 @@
+{% extends 'registration/home_base.html' %}
+{% block title %}Home{% endblock %}
+{% block extra-js %}
+    <script type="text/javascript" src="../../static/js/jquery.cookie.js"></script>
+    <script type="text/javascript" src="../../static/js/js-sha256.js"></script>
+
+{% endblock %}
+{% block body %}
+    <script type="text/javascript">
+    if ($.cookie("rodo_cookies_accepted_pp") !== sha256('rodo_cookies_accepted_pp')) {
+        $(window).on('load', function () {
+            $('#popUp').modal('show');
+            $('#going-in').on('click', function () {
+                $.cookie("rodo_cookies_accepted_pp", sha256('rodo_cookies_accepted_pp'));
+                window.location.replace("");
+            })
+        });
+    }
+</script>
+    <div class="container">
+    <div class="modal fade" data-backdrop="static" data-keyboard="false" id="popUp">
+        <div>
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 style="text-align: center;">Wchodząc na stronę akceptujesz politykę cookies oraz rozporządzenie
+                            o ochronie danych osobowych RODO.</h4>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="row">
+                            <a type="button" id="going-in" class="btn btn-primary col-md-offset-2 col-md-3" >Akceptuje i wchodzę</a>
+                            <a type="button" href="http://google.com" class="btn btn-danger col-md-offset-2 col-md-3">Wychodzę</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br>
+    <div class="navbar-brand home-logo col-md-offset-4 col-md-4 font-size-logo text-center">Proste Planowanie</div>
+    {% if user.is_authenticated %}
+        <a href={% url "start_page:schools" %}> Przejdz tutaj </a>
+    {% endif %}
+{% endblock %}

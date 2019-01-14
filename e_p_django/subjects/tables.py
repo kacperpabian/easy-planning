@@ -1,24 +1,24 @@
 import django_tables2 as tables
-# noinspection PyUnresolvedReferences
-from start_page import models
+
+from .models import Subject
 
 
-class ScheduleTable(tables.Table):
-    name = tables.Column(verbose_name='Nazwa planu')
-    description = tables.Column(verbose_name='Opis')
+class SubjectTable(tables.Table):
+    name = tables.Column(verbose_name='Nazwa')
+    short_name = tables.Column(verbose_name='Skrócona nazwa')
     delete = tables.TemplateColumn(
         verbose_name='Usuń',
-        template_name='button_templates/button_delete_schedule.html'
+        template_name='subjects/button_delete_subject.html'
     )
 
     edit = tables.TemplateColumn(
         verbose_name='Edytuj',
-        template_name='button_templates/button_edit_schedule.html'
+        template_name='subjects/button_edit_subject.html'
     )
 
     class Meta:
-        model = models.Schedule
-        fields = ['name', 'description']
+        model = Subject
+        fields = ['name', 'short_name']
         attrs = {
             'class': 'table-condensed align-middle',
             'style': 'border-radius: 5px; \

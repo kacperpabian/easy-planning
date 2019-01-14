@@ -1,0 +1,4 @@
+{% extends 'object_delete/delete_form.html' %}
+{% block back-href %}
+    href={% url 'start_page:object_creation:subjects:subjects' school.id %}
+{% endblock %}
