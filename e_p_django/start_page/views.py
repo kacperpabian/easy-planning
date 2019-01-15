@@ -1,14 +1,10 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, get_user, get_user_model
+from django.contrib.auth import authenticate, login, get_user
 from django.views import generic
 
 from .forms import UserFormRegister, UserFormLogin
-# noinspection PyUnresolvedReferences
-from object_creation.forms import ScheduleForm
-from . import models
-# noinspection PyUnresolvedReferences
-from object_creation import tables
+from school_schedule import models
 
 
 class UserLoginView(generic.View):
@@ -77,21 +73,6 @@ class UserRegisterView(generic.View):
 
 
 # class ScheduleView(generic.ListView, )
-
-class SchoolView(generic.TemplateView):
-    model = models.School
-    template_name = 'start_page/schools.html'
-
-    def get_context_data(self, **kwargs):
-        user = self.request.user
-        context = super().get_context_data(**kwargs)
-        context['all_schools'] = models.School.objects.filter(user=user.id)
-        # context['schedule_table'] = models.Schedule.objects.filter()
-        return context
-
-    # def get_queryset(self):
-    #     user = self.request.user
-    #     return models.School.objects.filter(user=user.id)
 
 
 # class ScheduleView(generic.ListView):

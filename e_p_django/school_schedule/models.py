@@ -26,14 +26,6 @@ class AuthUser(models.Model):
         db_table = 'auth_user'
 
 
-class Group(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'group'
-
-
 class School(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     user = models.ForeignKey(AuthUser, on_delete=models.CASCADE, db_column='user_id')

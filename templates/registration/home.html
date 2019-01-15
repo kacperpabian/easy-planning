@@ -1,8 +1,9 @@
 {% extends 'registration/home_base.html' %}
+{% load static %}
 {% block title %}Home{% endblock %}
 {% block extra-js %}
-    <script type="text/javascript" src="../../static/js/jquery.cookie.js"></script>
-    <script type="text/javascript" src="../../static/js/js-sha256.js"></script>
+    <script type="text/javascript" src="{% static 'js/jquery.cookie.js' %}"></script>
+    <script type="text/javascript" src={% static 'js/js-sha256.js' %}></script>
 
 {% endblock %}
 {% block body %}

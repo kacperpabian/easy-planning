@@ -1,4 +1,4 @@
-{% extends 'object_delete/delete_form.html' %}
+{% extends 'object_delete/../delete_form.html' %}
 {% block back-href %}
-    href={% url 'start_page:object_creation:teachers:teachers' school.id %}
+    href={% url 'start_page:school_schedule:teachers:teachers' school.id %}
 {% endblock %}

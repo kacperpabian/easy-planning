@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path, include
-app_name = 'object_creation'
+app_name = 'school_schedule'
 
 urlpatterns = [
     # path('change-schedule/<int:pk>/', views.ScheduleChange.as_view(), name='schedule-change'),

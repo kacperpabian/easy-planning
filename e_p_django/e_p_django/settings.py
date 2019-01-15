@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'django_tables2',
 
     'start_page',
-    'object_creation',
+    'school_schedule',
     'user_profile',
     'classes_app',
     'teachers',

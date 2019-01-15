@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from start_page.models import School
+from school_schedule.models import School
 
 
 class Room(models.Model):
@@ -11,7 +11,7 @@ class Room(models.Model):
     capacity = models.IntegerField()
 
     def get_absolute_url(self):
-        return reverse('start_page:object_creation:rooms:rooms', kwargs={'pk': self.school_id})
+        return reverse('start_page:school_schedule:rooms:rooms', kwargs={'pk': self.school_id})
 
     class Meta:
         managed = False

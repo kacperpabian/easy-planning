@@ -1,6 +1,5 @@
-from django.contrib.auth.models import User
 # noinspection PyUnresolvedReferences
-from start_page.models import (
+from school_schedule.models import (
     Schedule,
     SchoolBreakes,
     School

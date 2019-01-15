@@ -1,6 +1,6 @@
-{% extends 'object_creation/view_template.html' %}
+{% extends 'view_template.html' %}
 {% block href-add %}
-    {% url 'start_page:object_creation:subjects:subject-add' school.id %}
+    {% url 'start_page:school_schedule:subjects:subject-add' school.id %}
 {% endblock %}
 {% block add-button %}
     Dodaj przedmiot

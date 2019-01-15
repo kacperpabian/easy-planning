@@ -1,13 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
-from django_tables2 import (
-    SingleTableView,
-    LazyPaginator
-)
-# noinspection PyUnresolvedReferences
-from start_page import models
-from . import forms, tables
+
+from school_schedule import models
+from . import forms
 from django.urls import reverse_lazy
 
 
@@ -19,9 +15,25 @@ def _get_form(request, formcls, prefix):
 # class BreakesScheduleCreate(generic.TemplateView):
 
 
+class SchoolView(generic.TemplateView):
+    model = models.School
+    template_name = 'schools/schools.html'
+
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        context = super().get_context_data(**kwargs)
+        context['all_schools'] = models.School.objects.filter(user=user.id)
+        # context['schedule_table'] = models.Schedule.objects.filter()
+        return context
+
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     return models.School.objects.filter(user=user.id)
+
+
 class SchoolCreate(generic.TemplateView):
     # model = models.School
-    template_name = 'object_creation/school_add.html'
+    template_name = 'schools/school_add.html'
     school_form_class = forms.SchoolForm
     breakes_form_class = forms.SchoolBreakesForm
 
@@ -57,7 +69,7 @@ class SchoolCreate(generic.TemplateView):
 
 class SchoolUpdate(generic.UpdateView):
     form_class = forms.SchoolForm
-    template_name = 'object_edit/school_edit.html'
+    template_name = 'schools/school_edit.html'
     template_name_suffix = '_update_form'
 
     def get_queryset(self):
@@ -92,13 +104,13 @@ class SchoolUpdate(generic.UpdateView):
 
 class SchoolDelete(generic.DeleteView):
     model = models.School
-    template_name = "object_delete/school_delete.html"
+    template_name = "schools/school_delete.html"
     success_url = reverse_lazy('start_page:schools')
 
 
 class ScheduleCreate(generic.CreateView):
     model = models.Schedule
-    template_name = "object_creation/schedule_add.html"
+    template_name = "schedules/schedule_add.html"
     form_class = forms.ScheduleForm
 
     def form_valid(self, form):
@@ -110,7 +122,7 @@ class ScheduleCreate(generic.CreateView):
 
 class ScheduleDelete(generic.DeleteView):
     model = models.Schedule
-    template_name = "object_delete/schedule_delete.html"
+    template_name = "schedules/schedule_delete.html"
 
     # context_object_name = 'subject'
 

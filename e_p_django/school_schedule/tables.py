@@ -1,6 +1,6 @@
 import django_tables2 as tables
 # noinspection PyUnresolvedReferences
-from start_page import models
+import models
 
 
 class ScheduleTable(tables.Table):

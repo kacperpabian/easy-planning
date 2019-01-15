@@ -11,7 +11,7 @@ from django_tables2 import (
 from .forms import ClassForm
 from .models import Class
 from .tables import ClassTable
-from start_page.models import School
+from school_schedule.models import School
 
 
 class ClassCreate(generic.CreateView):
@@ -55,7 +55,7 @@ class ClassDelete(generic.DeleteView):
 
     def get_success_url(self):
         school_id = self.object.school_id
-        return reverse_lazy('start_page:object_creation:classes_app:classes', kwargs={'pk': school_id})
+        return reverse_lazy('start_page:school_schedule:classes_app:classes', kwargs={'pk': school_id})
 
 
 class ClassUpdate(generic.UpdateView):

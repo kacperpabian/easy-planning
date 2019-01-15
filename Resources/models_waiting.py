@@ -47,3 +47,11 @@ class TeacherSubject(models.Model):
     class Meta:
         managed = False
         db_table = 'teacher_subject'
+
+
+class Group(models.Model):
+    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+
+    class Meta:
+        managed = False
+        db_table = 'group'
