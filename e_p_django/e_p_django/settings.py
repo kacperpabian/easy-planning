@@ -18,7 +18,6 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.settings'
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '../..'))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
@@ -31,6 +30,9 @@ DEBUG = True
 ALLOWED_HOSTS = ['localhost',
                  '185.24.216.166']
 
+INTERNAL_IPS = ['localhost',
+                '185.24.216.166',
+                '127.0.0.1']
 
 # Application definition
 
@@ -61,8 +63,34 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+
 ]
+
+if DEBUG:
+    MIDDLEWARE.append(
+        'debug_toolbar.middleware.DebugToolbarMiddleware')
+    INSTALLED_APPS.append('debug_toolbar')
+    DEBUG_TOOLBAR_PANELS = [
+        # adds a request history to the debug toolbar
+        'ddt_request_history.panels.request_history.RequestHistoryPanel',
+
+        'debug_toolbar.panels.versions.VersionsPanel',
+        'debug_toolbar.panels.timer.TimerPanel',
+        'debug_toolbar.panels.settings.SettingsPanel',
+        'debug_toolbar.panels.headers.HeadersPanel',
+        'debug_toolbar.panels.request.RequestPanel',
+        'debug_toolbar.panels.sql.SQLPanel',
+        'debug_toolbar.panels.templates.TemplatesPanel',
+        'debug_toolbar.panels.staticfiles.StaticFilesPanel',
+        'debug_toolbar.panels.cache.CachePanel',
+        'debug_toolbar.panels.signals.SignalsPanel',
+        'debug_toolbar.panels.logging.LoggingPanel',
+        'debug_toolbar.panels.redirects.RedirectsPanel',
+        'debug_toolbar.panels.profiling.ProfilingPanel',
+    ]
+    DEBUG_TOOLBAR_CONFIG = {
+        'RESULTS_CACHE_SIZE': 100}
 
 ROOT_URLCONF = 'e_p_django.urls'
 
@@ -84,7 +112,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'e_p_django.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
@@ -98,7 +125,6 @@ DATABASES = {
         'PORT': "3306",
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -137,7 +163,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/

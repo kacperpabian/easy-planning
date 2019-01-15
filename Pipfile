@@ -10,6 +10,8 @@ mysqlclient = {path = "./Resources/mysqlclient-1.3.13-cp37-cp37m-win_amd64.whl"}
 django-widget-tweaks = "*"
 django-tables2 = "*"
 six = "*"
+django-debug-toolbar = "*"
+django-debug-toolbar-request-history = "*"
 
 [dev-packages]
 
