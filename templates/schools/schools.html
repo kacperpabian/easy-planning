@@ -21,7 +21,7 @@
                     {% if school %}
                         <div class="panel-body col-md-offset-2">
                             <div style="background: lightgray; border: none;">
-                                <a href="#" type="button" class="btn btn-success col-md-10">Przejdź do dodawania zajęć i edytowania planów</a>
+                                <a href="{% url 'start_page:schools:lessons_panel:lessons-panel' school.id %}" type="button" class="btn btn-success col-md-10">Przejdź do dodawania zajęć i edytowania planów</a>
 {#                                    <a href="#" type="button" class="btn btn-primary col-md-1">Widok</a>#}
                             </div>
                         </div>

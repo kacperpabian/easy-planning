@@ -1,4 +1,5 @@
 {% extends 'start_page/base.html' %}
+{% load render_table from django_tables2 %}
 
 {% block title %}
     Panel lekcji
@@ -7,29 +8,41 @@
 {% block body %}
     {% include 'start_page/messages_template.html' %}
     {% include 'start_page/error_template.html' %}
-    <div {% block outside-panel-class %}class="panel panel-group col-md-offset-3 col-md-6"{% endblock %}>
-        <div class="row">
+
+    <div>
+        <div class="panel panel-group col-md-1" >
+            <div class="panel-heading">
+                <h4 style="text-align: center;">Wybór klasy</h4>
+            </div>
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h3 style="text-align: center;">Dodawanie lekcji:</h3>
+                <div class="panel-body">
+                    {% render_table table %}
                 </div>
+            </div>
+        </div>
+        <div class="panel panel-group col-md-offset-9 col-md-2">
+            <div class="row">
                 <div class="panel panel-default">
-                    <div {% block inside-panel-class %}class="col-md-offset-1 col-md-10" {% endblock%}>
-                        <div class="panel-body">
-                            <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-                                {% csrf_token %}
-                                {% include 'lessons_panel/form_template_lessons.html' %}
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-info col-md-offset-4 col-md-4 col-xs-offset-4 col-xs-4
-                                    col-sm-offset-4 col-sm-4 ">Dodaj lekcje</button>
-                                </div>
-                            </form>
+                    <div class="panel-heading">
+                        <h3 style="text-align: center;">Dodawanie lekcji:</h3>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="col-md-offset-1 col-md-10">
+                            <div class="panel-body">
+                                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {% include 'lessons_panel/form_template_lessons.html' %}
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8
+                                        col-sm-offset-2 col-sm-8 ">Dodaj</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
-                {% block additional-info %}
-                {% endblock %}
             </div>
         </div>
     </div>
+
 {% endblock %}

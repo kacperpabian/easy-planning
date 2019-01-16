@@ -1,14 +1,16 @@
 import django_tables2 as tables
+from django.utils.safestring import mark_safe
 
 from classes_app.models import Class
 
 
 class ClassTable(tables.Table):
+    id = tables.Column()
     name = tables.Column(verbose_name='Nazwa')
 
     class Meta:
         model = Class
-        fields = ['name']
+        fields = ['id', 'name']
         attrs = {
             'class': 'table-condensed align-middle',
             'style': 'border-radius: 5px; \

@@ -17,7 +17,7 @@ class Group(models.Model):
 class Lesson(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     class_field = models.ForeignKey(Class, on_delete=models.CASCADE, db_column='class_id')  # Field renamed because it was a Python reserved word.
-    group = models.ForeignKey(Group, models.DO_NOTHING)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, default=None, null=True, blank=True, db_column='group_id')
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, db_column='subject_ID')  # Field name made lowercase.
     room = models.ForeignKey(Room, models.DO_NOTHING, db_column='room_ID')  # Field name made lowercase.
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE, db_column='schedule_ID')  # Field name made lowercase.
