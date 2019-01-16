@@ -10,7 +10,7 @@ from django_tables2 import (
 from .forms import SubjectForm
 from .models import Subject
 from .tables import SubjectTable
-from school_schedule.models import School
+from schools.models import School
 
 
 class SubjectsView(SingleTableView):
@@ -56,7 +56,7 @@ class SubjectDelete(generic.DeleteView):
 
     def get_success_url(self):
         school_id = self.object.school_id
-        return reverse_lazy('start_page:school_schedule:subjects:subjects', kwargs={'pk': school_id})
+        return reverse_lazy('start_page:schools:subjects:subjects', kwargs={'pk': school_id})
 
 
 class SubjectUpdate(generic.UpdateView):

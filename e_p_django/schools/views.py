@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
 
-from school_schedule import models
+from . import models
 from . import forms
 from django.urls import reverse_lazy
 
@@ -107,35 +107,6 @@ class SchoolDelete(generic.DeleteView):
     template_name = "schools/school_delete.html"
     success_url = reverse_lazy('start_page:schools')
 
-
-class ScheduleCreate(generic.CreateView):
-    model = models.Schedule
-    template_name = "schedules/schedule_add.html"
-    form_class = forms.ScheduleForm
-
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.created_by = self.request.user
-        obj.school_id = self.kwargs['pk']
-        return super(ScheduleCreate, self).form_valid(form)
-
-
-class ScheduleDelete(generic.DeleteView):
-    model = models.Schedule
-    template_name = "schedules/schedule_delete.html"
-
-    # context_object_name = 'subject'
-
-    def get_context_data(self, **kwargs):
-        school_id = self.object.school_id
-        context = super(ScheduleDelete, self).get_context_data(**kwargs)
-        context['school'] = get_object_or_404(models.School, id=school_id)
-        context['schedule'] = get_object_or_404(models.Schedule, id=self.kwargs.get('pk'))
-        return context
-
-    def get_success_url(self):
-        school_id = self.object.school_id
-        return reverse_lazy('start_page:schools', kwargs={'pk': school_id})
 
 
 # class ScheduleChange(generic.UpdateView):

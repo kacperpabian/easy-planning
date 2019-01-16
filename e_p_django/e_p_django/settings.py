@@ -48,12 +48,14 @@ INSTALLED_APPS = [
     'django_tables2',
 
     'start_page',
-    'school_schedule',
+    'schools',
     'user_profile',
     'classes_app',
     'teachers',
     'rooms',
-    'subjects'
+    'subjects',
+    'schedules',
+    'lessons_panel'
 ]
 
 MIDDLEWARE = [

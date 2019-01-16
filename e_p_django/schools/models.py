@@ -45,20 +45,6 @@ class School(models.Model):
         db_table = 'school'
 
 
-class Schedule(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
-    name = models.CharField(max_length=45)
-    description = models.CharField(max_length=45, blank=True, null=True)
-
-    def get_absolute_url(self):
-        return reverse('start_page:schools')
-
-    class Meta:
-        managed = False
-        db_table = 'schedule'
-
-
 class SchoolBreakes(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.

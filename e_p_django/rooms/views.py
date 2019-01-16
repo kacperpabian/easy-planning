@@ -11,7 +11,7 @@ from django_tables2 import (
 from .forms import RoomForm
 from .models import Room
 from .tables import RoomsTable
-from school_schedule.models import School
+from schools.models import School
 
 
 class RoomCreate(generic.CreateView):
@@ -55,7 +55,7 @@ class RoomDelete(generic.DeleteView):
 
     def get_success_url(self):
         school_id = self.object.school_id
-        return reverse_lazy('start_page:school_schedule:rooms:rooms', kwargs={'pk': school_id})
+        return reverse_lazy('start_page:schools:rooms:rooms', kwargs={'pk': school_id})
 
 
 class RoomUpdate(generic.UpdateView):

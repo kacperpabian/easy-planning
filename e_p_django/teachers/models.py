@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from school_schedule.models import School
+from schools.models import School
 
 
 class Teacher(models.Model):
@@ -11,7 +11,7 @@ class Teacher(models.Model):
     surname = models.CharField(max_length=45)
 
     def get_absolute_url(self):
-        return reverse('start_page:school_schedule:teachers:teachers', kwargs={'pk': self.school_id})
+        return reverse('start_page:schools:teachers:teachers', kwargs={'pk': self.school_id})
 
     class Meta:
         managed = False

@@ -1,6 +1,5 @@
 # noinspection PyUnresolvedReferences
-from school_schedule.models import (
-    Schedule,
+from .models import (
     SchoolBreakes,
     School
 )
@@ -22,17 +21,6 @@ class SchoolForm(forms.ModelForm):
         model = School
         fields = ['school_year', 'school_name', 'cycle',
                   'weekend_days', 'start_time', 'max_lessons', 'description']
-
-
-class ScheduleForm(forms.ModelForm):
-
-    class Meta:
-        labels = {
-            'name': 'Nazwa planu',
-            'description': 'Opis'
-        }
-        model = Schedule
-        fields = ['name', 'description']
 
 
 class SchoolBreakesForm(forms.ModelForm):

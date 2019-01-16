@@ -1,6 +1,6 @@
 import django_tables2 as tables
 # noinspection PyUnresolvedReferences
-import models
+from .models import Schedule
 
 
 class ScheduleTable(tables.Table):
@@ -17,7 +17,7 @@ class ScheduleTable(tables.Table):
     )
 
     class Meta:
-        model = models.Schedule
+        model = Schedule
         fields = ['name', 'description']
         attrs = {
             'class': 'table-condensed align-middle',

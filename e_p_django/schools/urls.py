@@ -1,6 +1,6 @@
 from . import views
 from django.urls import path, include
-app_name = 'school_schedule'
+app_name = 'schools'
 
 urlpatterns = [
     # path('change-schedule/<int:pk>/', views.ScheduleChange.as_view(), name='schedule-change'),
@@ -9,9 +9,10 @@ urlpatterns = [
     path('create-school/', views.SchoolCreate.as_view(), name='school-create'),
     path('update-school/<int:pk>/', views.SchoolUpdate.as_view(), name='school-update'),
     path('del-school/<int:pk>/', views.SchoolDelete.as_view(), name='school-delete'),
-    path('schedule/create-schedule/<int:pk>/', views.ScheduleCreate.as_view(), name='schedule-create'),
+    path('schedules/', include('schedules.urls')),
     path('subjects/', include('subjects.urls')),
     path('rooms/', include('rooms.urls')),
     path('teachers/', include('teachers.urls')),
-    path('classes_templates/', include('classes_app.urls'))
+    path('classes/', include('classes_app.urls')),
+    path('lessons_panel/', include('lessons_panel.urls'))
 ]

@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from school_schedule.models import School
+from schools.models import School
 
 
 class Subject(models.Model):
@@ -11,7 +11,7 @@ class Subject(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
 
     def get_absolute_url(self):
-        return reverse('start_page:school_schedule:subjects:subjects', kwargs={'pk': self.school_id})
+        return reverse('start_page:schools:subjects:subjects', kwargs={'pk': self.school_id})
 
     class Meta:
         managed = False
