@@ -1,14 +1,35 @@
-{% extends 'template_add_edit.html' %}
-{% block form-template %}
-    {% include 'lessons_panel/form_template_lessons.html' %}
-{% endblock %}
+{% extends 'start_page/base.html' %}
+
 {% block title %}
-    Dodaj szkołę
+    Panel lekcji
 {% endblock %}
-{% block panel-header %}
-    Informacje o szkole:
+
+{% block body %}
+    {% include 'start_page/messages_template.html' %}
+    {% include 'start_page/error_template.html' %}
+    <div {% block outside-panel-class %}class="panel panel-group col-md-offset-3 col-md-6"{% endblock %}>
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 style="text-align: center;">Dodawanie lekcji:</h3>
+                </div>
+                <div class="panel panel-default">
+                    <div {% block inside-panel-class %}class="col-md-offset-1 col-md-10" {% endblock%}>
+                        <div class="panel-body">
+                            <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {% include 'lessons_panel/form_template_lessons.html' %}
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info col-md-offset-4 col-md-4 col-xs-offset-4 col-xs-4
+                                    col-sm-offset-4 col-sm-4 ">Dodaj lekcje</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% block additional-info %}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
 {% endblock %}
-{% block post-button %}
-    Dodaj
-{% endblock %}
-{% block add-button %}{% endblock %}
