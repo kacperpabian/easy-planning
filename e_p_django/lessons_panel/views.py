@@ -14,7 +14,6 @@ from schools.models import School
 
 
 class Lessons_Panel_View(generic.TemplateView):
-    # model = models.School
     template_name = 'schools/school_add.html'
     lesson_form_class = LessonForm
     # breakes_form_class = forms.SchoolBreakesForm
