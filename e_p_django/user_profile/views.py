@@ -1,8 +1,7 @@
 from django.shortcuts import render
 from django.views import generic
 from django.contrib import messages
-# noinspection PyUnresolvedReferences
-from start_page import models
+
 from . import forms
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 

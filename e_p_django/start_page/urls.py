@@ -1,12 +1,15 @@
-from . import views
 from django.urls import path, include
+
+from . import views
+from schools.views import SchoolView
+
+
 app_name = 'start_page'
 
 urlpatterns = [
     path('register', views.UserRegisterView.as_view(), name='register'),
     path('login', views.UserLoginView.as_view(), name='login'),
-    path('', views.SchoolView.as_view(), name='schools'),
-    # /schedules/schedule/add/
-    path('details/', include('object_creation.urls')),
+    path('', SchoolView.as_view(), name='schools'),
+    path('details/', include('schools.urls')),
     path('profile/', include('user_profile.urls'))
 ]

@@ -1,0 +1,7 @@
+{% extends 'view_template.html' %}
+{% block href-add %}
+    {% url 'start_page:schools:classes_app:class-create' school.id %}
+{% endblock %}
+{% block add-button %}
+    Dodaj klasę
+{% endblock %}
