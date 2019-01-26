@@ -5,4 +5,5 @@ app_name = 'lessons_panel'
 
 urlpatterns = [
     path('<int:pk>/', views.LessonsPanelView.as_view(), name='lessons-panel'),
+    path('selected-class/<int:pk>/', views.SelectedClass.as_view(), name='selected-class')
 ]

@@ -9,6 +9,7 @@ class Class(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     name = models.CharField(max_length=45)
     short_name = models.CharField(max_length=45)
+    is_selected = models.BooleanField(default=False)
 
     def get_absolute_url(self):
         return reverse('start_page:schools:classes_app:classes', kwargs={'pk': self.school_id})
@@ -17,5 +18,4 @@ class Class(models.Model):
         return self.name
 
     class Meta:
-        managed = False
         db_table = 'class'

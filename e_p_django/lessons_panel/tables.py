@@ -5,12 +5,16 @@ from classes_app.models import Class
 
 
 class ClassTable(tables.Table):
-    id = tables.Column()
+    # id = tables.Column()
     name = tables.Column(verbose_name='Nazwa')
+    select_class = tables.TemplateColumn(
+        verbose_name='Wybierz',
+        template_name='lessons_panel/button_select_class.html'
+    )
 
     class Meta:
         model = Class
-        fields = ['id', 'name']
+        fields = ['name']
         attrs = {
             'class': 'table-condensed align-middle',
             'style': 'border-radius: 5px; \

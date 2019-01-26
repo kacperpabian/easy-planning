@@ -12,6 +12,11 @@ from schools.models import School
 from classes_app.models import Class
 
 
+# class SelectClass(generic.TemplateView):
+#
+#     def get_context_data(self):
+
+
 class LessonsPanelView(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
     lesson_form_class = LessonForm
