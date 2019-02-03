@@ -13,4 +13,4 @@ class LessonForm(forms.ModelForm):
             'lesson_number': 'Numer lekcji'
         }
         model = Lesson
-        fields = ['group', 'subject', 'room', 'lesson_number']
+        fields = ['group', 'subject', 'room', 'lesson_number', 'class_field']
