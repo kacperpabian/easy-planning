@@ -6,7 +6,7 @@ from classes_app.models import Class
 
 
 class Schedule(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
+    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
     class_field = models.ForeignKey(Class, on_delete=models.CASCADE, db_column='class_ID')  # Field name made lowercase.
     name = models.CharField(max_length=45)
@@ -16,5 +16,5 @@ class Schedule(models.Model):
         return reverse('start_page:schools')
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'schedule'

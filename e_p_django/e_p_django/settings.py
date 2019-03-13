@@ -69,6 +69,25 @@ MIDDLEWARE = [
 
 ]
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'file': {
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': 'C:\\Users\\Student226123\\Desktop\\inzynierka\\easy-planning\\debug.log',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+    },
+}
+
 if DEBUG:
     MIDDLEWARE.append(
         'debug_toolbar.middleware.DebugToolbarMiddleware')
@@ -119,12 +138,12 @@ WSGI_APPLICATION = 'e_p_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'proste-planowanie-db',
-        'USER': 'kpabian',
-        'PASSWORD': 'Kacper2345!',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'epdb',
+        'USER': 'epuser',
+        'PASSWORD': 'Axolmi2345!',
         'HOST': '185.24.216.166',
-        'PORT': "3306",
+        'PORT': "5432",
     }
 }
 

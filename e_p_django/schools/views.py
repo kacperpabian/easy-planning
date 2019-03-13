@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.contrib import messages
 
+import logging
+
 from . import models
 from . import forms
 from django.urls import reverse_lazy
@@ -13,6 +15,7 @@ def _get_form(request, formcls, prefix):
 
 
 # class BreakesScheduleCreate(generic.TemplateView):
+logger = logging.getLogger(__name__)
 
 
 class SchoolView(generic.TemplateView):
@@ -35,26 +38,28 @@ class SchoolCreate(generic.TemplateView):
     # model = models.School
     template_name = 'schools/school_add.html'
     school_form_class = forms.SchoolForm
-    breakes_form_class = forms.SchoolBreakesForm
+    # breakes_form_class = forms.SchoolBreakesForm
 
     def post(self, request):
         post_data = request.POST or None
         school_form = self.school_form_class(post_data, prefix='school_form')
-        breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
+        # breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
 
-        context = self.get_context_data(school_form=school_form, breakes_form=breakes_form)
+        # context = self.get_context_data(school_form=school_form, breakes_form=breakes_form)
+        context = self.get_context_data(school_form=school_form)
 
         if school_form.is_valid():
             self.form_save(school_form)
-        if breakes_form.is_valid():
-            self.form_save(breakes_form)
+        # if breakes_form.is_valid():
+        #     self.form_save(breakes_form)
 
         return self.render_to_response(context)
 
     def form_save(self, form):
-        obj = form.save()
+        obj = form.save(commit=False)
         obj.created_by = self.request.user
         obj.user_id = self.request.user.id
+        logger.error('\n\n\n@@@@@@@@@@@@@@@@USER ID@@@@@@@@@@@@@@@@ ' + str(obj.user_id))
         messages.success(self.request, "{} saved successfully".format(obj))
         return obj
 

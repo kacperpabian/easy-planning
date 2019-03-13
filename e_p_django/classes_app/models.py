@@ -5,8 +5,8 @@ from schools.models import School
 
 
 class Class(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
+    id = models.AutoField(primary_key=True)  # Field name made lowercase.
+    school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
     name = models.CharField(max_length=45)
     short_name = models.CharField(max_length=45)
     is_selected = models.BooleanField(default=False)
@@ -18,4 +18,5 @@ class Class(models.Model):
         return self.name
 
     class Meta:
+        managed = True
         db_table = 'class'

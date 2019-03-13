@@ -5,8 +5,8 @@ from schools.models import School
 
 
 class Teacher(models.Model):
-    id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    school = models.ForeignKey(School, on_delete=models.CASCADE, db_column='school_ID')  # Field name made lowercase.
+    id = models.AutoField(primary_key=True)  # Field name made lowercase.
+    school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)
 
@@ -14,5 +14,5 @@ class Teacher(models.Model):
         return reverse('start_page:schools:teachers:teachers', kwargs={'pk': self.school_id})
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'teacher'
