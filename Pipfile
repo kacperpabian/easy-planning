@@ -11,7 +11,6 @@ django-tables2 = "*"
 six = "*"
 django-debug-toolbar = "*"
 django-debug-toolbar-request-history = "*"
-psycopg2-binary = "*"
 psycopg2 = "*"
 
 [dev-packages]
