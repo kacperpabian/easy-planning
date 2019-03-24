@@ -53,7 +53,7 @@ class UserRegisterView(generic.View):
     def post(self, request):
         form = self.form_class(request.POST)
         email = request.POST['email']
-        if models.AuthUser.objects.filter(email=email):
+        if models.User.objects.filter(email=email):
             messages.error(request, "Użytkownik z takim adresem email już istnieje.")
         elif form.is_valid():
             user = form.save(commit=False)

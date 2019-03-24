@@ -11,7 +11,6 @@ from django.contrib.auth.models import User
 
 
 class School(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     school_year = models.CharField(max_length=20)
     school_name = models.CharField(max_length=100)
@@ -30,7 +29,6 @@ class School(models.Model):
 
 
 class SchoolBreakes(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
     lesson_number = models.IntegerField()
     break_time = models.IntegerField()
