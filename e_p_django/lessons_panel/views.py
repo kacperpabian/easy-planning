@@ -12,6 +12,15 @@ from schools.models import School
 from classes_app.models import Class
 
 
+# class SelectYear(generic.ListView):
+#     model = School
+#     paginate_by = 5
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['dates'] = [(for date in School._meta.)]
+
+
 class SelectClass(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
     lesson_form_class = LessonForm

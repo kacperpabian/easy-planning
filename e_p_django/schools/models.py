@@ -12,7 +12,6 @@ from django.contrib.auth.models import User
 
 class School(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    school_year = models.CharField(max_length=20)
     school_name = models.CharField(max_length=100)
     description = models.CharField(max_length=60, blank=True, null=True)
     weekend_days = models.CharField(max_length=45)

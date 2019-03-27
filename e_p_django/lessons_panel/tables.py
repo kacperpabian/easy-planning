@@ -2,6 +2,7 @@ import django_tables2 as tables
 from django.utils.safestring import mark_safe
 
 from classes_app.models import Class
+from schedules.models import Schedule
 
 
 class ClassTable(tables.Table):
