@@ -5,7 +5,6 @@ from schools.models import School
 
 
 class Teacher(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
     name = models.CharField(max_length=45)
     surname = models.CharField(max_length=45)

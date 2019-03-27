@@ -7,7 +7,6 @@ from subjects.models import Subject
 
 
 class Group(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
 
     class Meta:
         managed = True
@@ -15,7 +14,6 @@ class Group(models.Model):
 
 
 class Lesson(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     class_field = models.ForeignKey(Class, on_delete=models.CASCADE)  # Field renamed because it was a Python reserved word.
     group = models.ForeignKey(Group, on_delete=models.CASCADE, default=None, null=True, blank=True)
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)  # Field name made lowercase.

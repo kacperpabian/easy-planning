@@ -5,7 +5,6 @@ from schools.models import School
 
 
 class Room(models.Model):
-    id = models.AutoField(primary_key=True)  # Field name made lowercase.
     school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
     room_number = models.CharField(unique=True, max_length=10)
     capacity = models.IntegerField()
