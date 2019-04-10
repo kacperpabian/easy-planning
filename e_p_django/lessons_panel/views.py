@@ -2,14 +2,17 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django import forms as django_forms
 
 import django_tables2 as tables
 
 from .forms import LessonForm
+from .forms import ScheduleCombo
 from .models import Lesson
 from .tables import ClassTable
 from schools.models import School
 from classes_app.models import Class
+from schedules.models import Schedule
 
 
 # class SelectYear(generic.ListView):
@@ -21,7 +24,7 @@ from classes_app.models import Class
 #         context['dates'] = [(for date in School._meta.)]
 
 
-class SelectClass(generic.TemplateView):
+class SelectClass(generic.CreateView):
     template_name = 'lessons_panel/lesson_add.html'
     lesson_form_class = LessonForm
 
@@ -57,17 +60,28 @@ class SelectClass(generic.TemplateView):
 class LessonsPanelView(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
     lesson_form_class = LessonForm
-    # breakes_form_class = forms.SchoolBreakesForm
+    combo_schedule_form = ScheduleCombo
 
     def get(self, request, *args, **kwargs):
         lesson_form = self.lesson_form_class
+        combo_schedule_form = self.combo_schedule_form
         # breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
         table = ClassTable(Class.objects.filter(school_id=kwargs['pk']))
         school_object = School.objects.get(id=kwargs['pk'])
+        # schedule_object = Schedule.objects.get(school_id=kwargs['pk'])
 
-        context = self.get_context_data(lesson_form=lesson_form, table=table, school_object=school_object)
+        context = self.get_context_data(
+            lesson_form=lesson_form,
+            table=table,
+            school_object=school_object,
+            schedule_object=combo_schedule_form
+        )
 
         return self.render_to_response(context)
+    #
+    # def post(self, **kwargs):
+
+
     # def form_valid(self, form):
     #     obj = form.save(commit=False)
     #     obj.created_by = self.request.user

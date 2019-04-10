@@ -20,7 +20,6 @@ class Lesson(models.Model):
     room = models.ForeignKey(Room, models.DO_NOTHING)  # Field name made lowercase.
     schedule = models.ForeignKey(Schedule, on_delete=models.CASCADE)  # Field name made lowercase.
     lesson_number = models.IntegerField()
-    test = models.IntegerField()
 
     class Meta:
         managed = True

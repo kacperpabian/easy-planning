@@ -12,6 +12,9 @@ class Schedule(models.Model):
     name = models.CharField(max_length=45)
     description = models.CharField(max_length=45, blank=True, null=True)
 
+    def __str__(self):
+        return str(self.year)
+
     def get_absolute_url(self):
         return reverse('start_page:schools')
 
