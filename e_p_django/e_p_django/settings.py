@@ -76,7 +76,7 @@ LOGGING = {
         'file': {
             'level': 'DEBUG',
             'class': 'logging.FileHandler',
-            'filename': 'C:\\Users\\Student226123\\Desktop\\inzynierka\\easy-planning\\debug.log',
+            'filename': '../debug.log',
         },
     },
     'loggers': {

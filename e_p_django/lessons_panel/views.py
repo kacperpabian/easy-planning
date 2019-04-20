@@ -60,21 +60,20 @@ class SelectClass(generic.CreateView):
 class LessonsPanelView(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
     lesson_form_class = LessonForm
-    combo_schedule_form = ScheduleCombo
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
         lesson_form = self.lesson_form_class
-        combo_schedule_form = self.combo_schedule_form
         # breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
-        table = ClassTable(Class.objects.filter(school_id=kwargs['pk']))
-        school_object = School.objects.get(id=kwargs['pk'])
+        table = ClassTable(Class.objects.filter(school_id=pk))
+        schedules = ScheduleCombo(school_pk=pk)
+        school_object = School.objects.get(id=pk)
         # schedule_object = Schedule.objects.get(school_id=kwargs['pk'])
 
         context = self.get_context_data(
             lesson_form=lesson_form,
             table=table,
             school_object=school_object,
-            schedule_object=combo_schedule_form
+            schedule_object=schedules
         )
 
         return self.render_to_response(context)

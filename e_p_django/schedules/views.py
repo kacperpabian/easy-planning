@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from django.views import generic
 from django.contrib import messages
 from django.urls import reverse_lazy
@@ -8,22 +8,35 @@ from schools.models import School
 from . import forms
 
 
-class ScheduleCreate(generic.CreateView):
+class ScheduleCreate(generic.DetailView):
     model = Schedule
     template_name = "schedules/schedule_add.html"
     form_class = forms.ScheduleForm
 
-    def form_valid(self, form):
-        obj = form.save(commit=False)
-        obj.created_by = self.request.user
-        obj.school_id = self.kwargs['pk']
-        return super(ScheduleCreate, self).form_valid(form)
+    def get(self, request, pk, *args, **kwargs):
+        form = forms.ScheduleForm(school_pk=pk)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request, pk):
+        form = forms.ScheduleForm(request.POST, school_pk=pk)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.created_by = self.request.user
+            obj.school_id = self.kwargs['pk']
+            obj.save()
+        return redirect('/')
+
+
+    # def form_valid(self, form):
+    #     obj = form.save(commit=False)
+    #     obj.created_by = self.request.user
+    #     obj.school_id = self.kwargs['pk']
+    #     return super(ScheduleCreate, self).form_valid(form)
 
 
 class ScheduleDelete(generic.DeleteView):
     model = Schedule
     template_name = "schedules/schedule_delete.html"
-
     # context_object_name = 'subject'
 
     def get_context_data(self, **kwargs):

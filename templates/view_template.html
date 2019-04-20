@@ -1,4 +1,5 @@
 {% extends 'start_page/base.html' %}
+{% include 'start_page/messages_template.html' %}
 {% load django_tables2 %}
 {% block body %}
     <a role="button" href="{% block href-add %}{% endblock %}" class="btn btn-success btn-sm col-md-offset-5 col-md-2">{% block add-button %}{% endblock %}</a><br><br>
