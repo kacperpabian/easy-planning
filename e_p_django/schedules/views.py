@@ -8,7 +8,7 @@ from schools.models import School
 from . import forms
 
 
-class ScheduleCreate(generic.DetailView):
+class ScheduleCreate(generic.View):
     model = Schedule
     template_name = "schedules/schedule_add.html"
     form_class = forms.ScheduleForm
@@ -20,18 +20,17 @@ class ScheduleCreate(generic.DetailView):
     def post(self, request, pk):
         form = forms.ScheduleForm(request.POST, school_pk=pk)
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.created_by = self.request.user
-            obj.school_id = self.kwargs['pk']
-            obj.save()
-        return redirect('/')
-
-
-    # def form_valid(self, form):
-    #     obj = form.save(commit=False)
-    #     obj.created_by = self.request.user
-    #     obj.school_id = self.kwargs['pk']
-    #     return super(ScheduleCreate, self).form_valid(form)
+            schedule_exist = Schedule.objects.filter(
+                year=form.cleaned_data['year'],
+                class_field=form.cleaned_data['class_field']
+            ).count()
+            if schedule_exist < 1:
+                obj = form.save(commit=False)
+                obj.created_by = self.request.user
+                obj.school_id = self.kwargs['pk']
+                obj.save()
+                return redirect('/')
+        return self.get(request, pk)
 
 
 class ScheduleDelete(generic.DeleteView):
@@ -43,7 +42,7 @@ class ScheduleDelete(generic.DeleteView):
         school_id = self.object.school_id
         context = super(ScheduleDelete, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=school_id)
-        context['schedule'] = get_object_or_404(Schedule, id=self.kwargs.get('pk'))
+        context['schedule'] = get_object_or_404(Schedule, id=self.kwargs.get('pk', ))
         return context
 
     def get_success_url(self):

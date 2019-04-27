@@ -1,6 +1,6 @@
 from django import forms
 
-from .models import Schedule
+from .models import Schedule, ScheduleDate
 from classes_app.models import Class
 
 
@@ -15,9 +15,17 @@ class ScheduleForm(forms.ModelForm):
     class Meta:
         labels = {
             'name': 'Nazwa planu',
-            'year': 'Rok rozpoczęcia',
             'description': 'Opis',
             'class_field': 'Klasa'
         }
         model = Schedule
-        fields = ['name', 'year', 'description', 'class_field']
+        fields = ['name', 'description', 'class_field']
+
+
+class ScheduleDateForm(forms.ModelForm):
+    class Meta:
+        labels = {
+            'year': 'Rok'
+        }
+        model = ScheduleDate
+        fields = ['year']

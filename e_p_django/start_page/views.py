@@ -21,7 +21,7 @@ class UserLoginView(generic.View):
             return render(request, self.template_name, {'form': form})
 
     def post(self, request):
-        if request.POST.get('submit') == 'sign-in':
+        if request.POST.get('submit', ) == 'sign-in':
             form = self.form_class()
             username = request.POST['username']
             password = request.POST['password']
@@ -34,7 +34,7 @@ class UserLoginView(generic.View):
                 messages.error(request, "Błędny login bądź hasło")
 
             return render(request, self.template_name, {'form': form})
-        elif request.POST.get('submit') == 'sign-up':
+        elif request.POST.get('submit', ) == 'sign-up':
             return redirect('start_page:register')
 
 

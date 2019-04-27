@@ -3,6 +3,7 @@ from django import forms
 from .models import Lesson
 from schedules.models import Schedule
 from classes_app.models import Class
+from schools.models import School
 
 
 class LessonForm(forms.ModelForm):
@@ -22,11 +23,11 @@ class ScheduleCombo(forms.ModelForm):
         school_pk = kwargs.pop('school_pk', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         if school_pk is not None:
-            schedules = Schedule.objects.filter(school_id=school_pk)
-            self.fields['class_field'].queryset = Class.objects.filter(school_id=school_pk)
+            school = School.objects.get(id=school_pk)
+            schedules = school.schedule_set.all()
+            self.fields['class_field'].queryset = school.class_set.all()
             self.fields['schedule'].queryset = schedules.exclude(
                 year=None).values_list('year', flat=True).distinct()
-
 
     class Meta:
         labels = {

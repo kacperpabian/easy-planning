@@ -34,11 +34,11 @@ class RoomsView(SingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super(RoomsView, self).get_context_data(**kwargs)
-        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk'))
+        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return context
 
     def get_queryset(self):
-        school = get_object_or_404(School, id=self.kwargs.get('pk'))
+        school = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return Room.objects.filter(school_id=school.id)
 
 
@@ -50,7 +50,7 @@ class RoomDelete(generic.DeleteView):
         school_id = self.object.school_id
         context = super(RoomDelete, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=school_id)
-        context['room'] = get_object_or_404(Room, id=self.kwargs.get('pk'))
+        context['room'] = get_object_or_404(Room, id=self.kwargs.get('pk', ))
         return context
 
     def get_success_url(self):

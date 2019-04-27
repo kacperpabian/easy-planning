@@ -21,11 +21,11 @@ class SubjectsView(SingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super(SubjectsView, self).get_context_data(**kwargs)
-        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk'))
+        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return context
 
     def get_queryset(self):
-        school = get_object_or_404(School, id=self.kwargs.get('pk'))
+        school = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return Subject.objects.filter(school_id=school.id)
 
 
@@ -51,7 +51,7 @@ class SubjectDelete(generic.DeleteView):
         school_id = self.object.school_id
         context = super(SubjectDelete, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=school_id)
-        context['subject'] = get_object_or_404(Subject, id=self.kwargs.get('pk'))
+        context['subject'] = get_object_or_404(Subject, id=self.kwargs.get('pk', ))
         return context
 
     def get_success_url(self):

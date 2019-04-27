@@ -33,11 +33,11 @@ class TeacherView(SingleTableView):
 
     def get_context_data(self, **kwargs):
         context = super(TeacherView, self).get_context_data(**kwargs)
-        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk'))
+        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return context
 
     def get_queryset(self):
-        school = get_object_or_404(School, id=self.kwargs.get('pk'))
+        school = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return Teacher.objects.filter(school_id=school.id)
 
 
@@ -49,7 +49,7 @@ class TeacherDelete(generic.DeleteView):
         school_id = self.object.school_id
         context = super(TeacherDelete, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=school_id)
-        context['teacher'] = get_object_or_404(Teacher, id=self.kwargs.get('pk'))
+        context['teacher'] = get_object_or_404(Teacher, id=self.kwargs.get('pk', ))
         return context
 
     def get_success_url(self):
