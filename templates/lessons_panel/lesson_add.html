@@ -24,19 +24,19 @@
             <div class="panel-heading">
                 <h4 style="text-align: center;">Rok</h4>
             </div>
-            <div class="panel panel-default">
-                <div class="panel-body">
+{#            <div class="panel panel-default">#}
+{#                <div class="panel-body">#}
 {#                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">#}
 {#                        {% csrf_token %}#}
 {#                        <div class="form-group">#}
-{#                            {{ schedule_object }}#}
+{#                            {{ schedule_date }}#}
 {#                        </div>#}
 {#                    </form>#}
 {#                    {% for field in schedule_object %}#}
 {#                        {{ field }}#}
 {#                    {% endfor %}#}
-                </div>
-            </div>
+{#                </div>#}
+{#            </div>#}
         </div>
         <div class="panel panel-group col-md-offset-8 col-md-2">
             <div class="row">
@@ -52,6 +52,9 @@
                                     {% include 'lessons_panel/form_template_lessons.html' %}
                                     <div class="form-group">
                                         {{ schedule_object }}
+                                    </div>
+                                    <div class="form-group">
+                                        {{ schedule_dates }}
                                     </div>
                                     <div class="form-group">
                                         <button type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8

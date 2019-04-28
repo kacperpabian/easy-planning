@@ -1,6 +1,7 @@
 from django import forms
 
 from .models import Lesson
+from schedules.models import ScheduleDate
 from schedules.models import Schedule
 from classes_app.models import Class
 from schools.models import School
@@ -18,16 +19,16 @@ class LessonForm(forms.ModelForm):
         fields = ['group', 'subject', 'room', 'lesson_number']
 
 
+
+
 class ScheduleCombo(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         school_pk = kwargs.pop('school_pk', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         if school_pk is not None:
             school = School.objects.get(id=school_pk)
-            schedules = school.schedule_set.all()
             self.fields['class_field'].queryset = school.class_set.all()
-            self.fields['schedule'].queryset = schedules.exclude(
-                year=None).values_list('year', flat=True).distinct()
+            self.fields['schedule'].queryset = school.schedule_set.all()
 
     class Meta:
         labels = {
@@ -35,7 +36,7 @@ class ScheduleCombo(forms.ModelForm):
             'schedule': 'Rok'
         }
         model = Lesson
-        fields = ['schedule', 'class_field']
+        fields = ['class_field', 'schedule']
 
 # class ScheduleCombo(forms.Form):
 #     schedules = None

@@ -1,0 +1,14 @@
+{% load widget_tweaks %}
+{% for field in schedule_form %}
+    <div class="form-group">
+        <label class="control-label">{{ field.label_tag }}</label>
+        <div>{{ field|add_class:'form-control' }}</div>
+    </div>
+{% endfor %}
+{% for field in schedule_date_form %}
+    <div class="form-group">
+        <label class="control-label">{{ field.label_tag }}</label>
+        <div>{{ field|add_class:'form-control' }}</div>
+    </div>
+{% endfor %}
+

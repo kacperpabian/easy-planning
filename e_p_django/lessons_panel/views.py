@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -12,7 +12,8 @@ from .models import Lesson
 from .tables import ClassTable
 from schools.models import School
 from classes_app.models import Class
-from schedules.models import Schedule
+from schedules.models import Schedule, ScheduleDate
+from schedules.forms import ScheduleDateForm
 
 
 # class SelectYear(generic.ListView):
@@ -63,16 +64,10 @@ class LessonsPanelView(generic.TemplateView):
 
     def get(self, request, pk, *args, **kwargs):
         lesson_form = LessonForm
-        # breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
-        # table = ClassTable(Class.objects.filter(school_id=pk))
         schedules = ScheduleCombo(school_pk=pk)
-        # school_object = School.objects.get(id=pk)
-        # schedule_object = Schedule.objects.get(school_id=kwargs['pk'])
 
         context = self.get_context_data(
             lesson_form=lesson_form,
-            # table=table,
-            # school_object=school_object,
             schedule_object=schedules
         )
 
@@ -80,25 +75,29 @@ class LessonsPanelView(generic.TemplateView):
 
     def post(self, request, pk, *args, **kwargs):
         post_data = request.POST
-        changed_post_data = post_data.copy()
-        if changed_post_data['schedule'] and changed_post_data['class_field']:
-            schedule_object = Schedule.objects.get(
-                year=changed_post_data['schedule'],
-                class_field=changed_post_data['class_field']
-            )
-            changed_schedule = str(schedule_object.id)
-            changed_post_data.update({'schedule': changed_schedule})
-        lesson_form = LessonForm(changed_post_data)
-        schedules = ScheduleCombo(changed_post_data, school_pk=pk)
-
-        # errors = schedules.errors
+        # changed_post_data = post_data.copy()
+        # if changed_post_data['schedule'] and changed_post_data['class_field']:
+        #     changed_schedule = str(schedule_object.id)
+        #     changed_post_data.update({'schedule': changed_schedule})
+        lesson_form = LessonForm(post_data)
+        schedules = ScheduleCombo(post_data, school_pk=pk)
+        # schedules
+        errors = schedules.errors
 
         if schedules.is_valid():
-            class_id = changed_post_data['class_field']
-            schedule_id = changed_post_data['schedule']
+            # if Schedule.objects.filter(
+            #     year=post_data['schedule'],
+            #     class_field=post_data['class_field']
+            # ).count() > 0:
+            #     schedule_object = Schedule.objects.get(
+            #         year=ScheduleDate(post_data['schedule']),
+            #         class_field=post_data['class_field']
+            #     )
+            class_id = post_data['class_field']
+            schedule_id = post_data['schedule']
             if lesson_form.is_valid():
                 self.form_save(lesson_form, class_id, schedule_id)
-                return self.get(request, pk)
+                return redirect("/")
         return self.get(request, pk)
 
     def form_save(self, form, class_id, schedule_id):

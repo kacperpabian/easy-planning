@@ -8,9 +8,12 @@ from classes_app.models import Class
 class ScheduleDate(models.Model):
     year = models.PositiveSmallIntegerField(default=None)
 
+    def __str__(self):
+        return str(self.year)
+
     class Meta:
         managed = True
-        db_table = 'schedule'
+        db_table = 'schedule_date'
 
 
 class Schedule(models.Model):
@@ -22,6 +25,9 @@ class Schedule(models.Model):
 
     def get_absolute_url(self):
         return reverse('start_page:schools')
+
+    def __str__(self):
+        return str(self.year.year)
 
     class Meta:
         managed = True
