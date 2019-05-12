@@ -76,7 +76,7 @@ class LessonsPanelView(generic.TemplateView):
     def get(self, request, pk, *args, **kwargs):
         schedules = ScheduleCombo(school_pk=pk)
         max_lessons, school_object, work_dict = make_schedule_panel(pk)
-        lesson_form = LessonForm(work_dict=work_dict)
+        lesson_form = LessonForm(work_dict=work_dict, max_lessons=max_lessons)
 
         context = self.get_context_data(
             lesson_form=lesson_form,
@@ -124,11 +124,28 @@ def load_schedule_panel(request):
     school_id = schedule_object.school_id
     lessons_list = schedule_object.lesson_set.all()
     max_lessons, school_object, work_dict = make_schedule_panel(school_id)
+    for lesson in lessons_list:
+        lesson.day = int(lesson.day)
+    table_string = "<tbody id='table_body'>"
+
+    for key, value in work_dict.items():
+        table_string += "<tr><td>" + value + "</td>"
+        if lessons_list:
+            for i in range(1, max_lessons + 1):
+                if_inside = False
+                for lesson in lessons_list:
+                    if lesson.lesson_number == i and lesson.day == key and not if_inside:
+                        table_string += "<td>" + lesson.subject.short_name + "<br>" + \
+                                        lesson.room.room_number + "</td>"
+                        if_inside = True
+                if not if_inside:
+                    table_string += "<td></td>"
+        table_string += "</tr>"
+    table_string += "</tbody>"
+
     return render(request, 'lessons_panel/schedule_panel.html', {'schedule_selected': schedule_object,
-                                                                 'lessons_list': lessons_list,
-                                                                 'school_object': school_object,
                                                                  'max_lessons': range(1, max_lessons + 1),
-                                                                 'work_dict': work_dict})
+                                                                 'schedule_panel': table_string})
 
     # def post(self, **kwargs):
 

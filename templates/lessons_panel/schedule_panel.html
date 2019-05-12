@@ -1,3 +1,5 @@
+{% load if_lesson_added %}
+
 <div class="panel panel-default col-md-8">
     <div class="panel-heading">
         {% if schedule_selected.name %}
@@ -16,15 +18,7 @@
                 {% endfor %}
             </tr>
         </thead>
-        <tbody id="table_body">
-            {% for key, value in work_dict.items %}
-                <tr>
-                    <td scope="row">{{ value }}</td>
-                    {% if lessons_list %}
-                    {% endif %}
-                </tr>
-            {% endfor %}
-        </tbody>
+        {{ schedule_panel|safe }}
     </table>
 
     </div>

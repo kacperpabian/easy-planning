@@ -12,6 +12,9 @@ class Teacher(models.Model):
     def get_absolute_url(self):
         return reverse('start_page:schools:teachers:teachers', kwargs={'pk': self.school_id})
 
+    def __str__(self):
+        return self.name + " " + self.surname
+
     class Meta:
         managed = True
         db_table = 'teacher'

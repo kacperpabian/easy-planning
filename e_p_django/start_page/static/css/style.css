@@ -50,3 +50,8 @@ div.font-size-logo{
     border: none;
     border-radius: 0;
 }
+
+.message-cust{
+  position:absolute;
+  top: 123px;
+}

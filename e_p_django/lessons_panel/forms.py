@@ -1,32 +1,37 @@
 from django import forms
 
 from .models import Lesson
-from schedules.models import ScheduleDate
 from schedules.models import Schedule
-from classes_app.models import Class
 from schools.models import School
-from django_select2.forms import ModelSelect2Widget
 
 
 class LessonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         work_dict = kwargs.pop('work_dict', None)
+        max_lessons = kwargs.pop('max_lessons', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         if work_dict:
             work_dict = ((str(key), value) for key, value in work_dict.items())
             if work_dict:
-                self.fields['day'] = forms.ChoiceField(required=False, choices=work_dict, widget=forms.Select())
+                self.fields['day'] = forms.ChoiceField(required=True, choices=work_dict,
+                                                       widget=forms.Select(), label="Dzień")
+        if max_lessons:
+            max_lessons = ((i, i) for i in range(1, max_lessons + 1))
+            if max_lessons:
+                self.fields['lesson_number'] = forms.ChoiceField(required=True, choices=max_lessons,
+                                                                 widget=forms.Select(), label="Numer lekcji")
 
     class Meta:
         labels = {
             'group': 'Grupa',
             'subject': 'Przedmiot',
+            'teacher': 'Prowadzący',
             'room': 'Pokój',
             'lesson_number': 'Numer lekcji',
             'day': 'Dzień'
         }
         model = Lesson
-        fields = ['group', 'subject', 'room', 'lesson_number', 'day']
+        fields = ['group', 'subject', 'teacher', 'room', 'lesson_number', 'day']
 
 
 class ScheduleCombo(forms.ModelForm):
