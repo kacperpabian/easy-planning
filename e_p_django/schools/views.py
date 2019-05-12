@@ -99,14 +99,13 @@ class SchoolUpdate(generic.UpdateView):
 
     # display blank form
     def get(self, request, **kwargs):
-        schedule = self.get_object()
-        data = {'cycle': schedule.cycle,
-                'school_year': schedule.school_year,
-                'school_name': schedule.school_name,
-                'description': schedule.description,
-                'weekend_days': schedule.weekend_days,
-                'start_time': schedule.start_time,
-                'max_lessons': schedule.max_lessons}
+        school = self.get_object()
+        data = {'cycle': school.cycle,
+                'school_name': school.school_name,
+                'description': school.description,
+                'weekend_days': school.weekend_days,
+                'start_time': school.start_time,
+                'max_lessons': school.max_lessons}
         form = self.form_class(initial=data)
         return render(request, self.template_name, {'form': form})
 

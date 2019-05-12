@@ -57,47 +57,50 @@ from schedules.forms import ScheduleDateForm
 #         # messages.success(self.request, "{} saved successfully".format(obj.class_id))
 #         return obj
 
+def make_schedule_panel(pk):
+    days_dict = {1: "Pon", 2: "Wt", 3: "Śr", 4: "Czw", 5: "Pt", 6: "Sob", 7: "Nie"}
+    school_object = School.objects.get(id=pk)
+    max_lessons = school_object.max_lessons
+    work_dict = days_dict.copy()
+    for key, value in list(work_dict.items()):
+        if str(key) in school_object.weekend_days or value in school_object.weekend_days:
+            del work_dict[key]
+    return max_lessons, school_object, work_dict
+
 
 class LessonsPanelView(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
+
     # lesson_form_class = LessonForm
 
     def get(self, request, pk, *args, **kwargs):
-        lesson_form = LessonForm
         schedules = ScheduleCombo(school_pk=pk)
+        max_lessons, school_object, work_dict = make_schedule_panel(pk)
+        lesson_form = LessonForm(work_dict=work_dict)
 
         context = self.get_context_data(
             lesson_form=lesson_form,
-            schedule_object=schedules
+            schedule_object=schedules,
+            school_object=school_object,
+            max_lessons=range(1, max_lessons + 1),
+            work_dict=work_dict
         )
 
         return self.render_to_response(context)
 
     def post(self, request, pk, *args, **kwargs):
         post_data = request.POST
-        # changed_post_data = post_data.copy()
-        # if changed_post_data['schedule'] and changed_post_data['class_field']:
-        #     changed_schedule = str(schedule_object.id)
-        #     changed_post_data.update({'schedule': changed_schedule})
         lesson_form = LessonForm(post_data)
         schedules = ScheduleCombo(post_data, school_pk=pk)
-        # schedules
-        errors = schedules.errors
 
         if schedules.is_valid():
-            # if Schedule.objects.filter(
-            #     year=post_data['schedule'],
-            #     class_field=post_data['class_field']
-            # ).count() > 0:
-            #     schedule_object = Schedule.objects.get(
-            #         year=ScheduleDate(post_data['schedule']),
-            #         class_field=post_data['class_field']
-            #     )
             class_id = post_data['class_field']
             schedule_id = post_data['schedule']
+            errors = lesson_form.errors
             if lesson_form.is_valid():
                 self.form_save(lesson_form, class_id, schedule_id)
-                return redirect("/")
+                messages.success(request, "Dodano lekcje")
+                return self.get(request, pk)
         return self.get(request, pk)
 
     def form_save(self, form, class_id, schedule_id):
@@ -108,8 +111,26 @@ class LessonsPanelView(generic.TemplateView):
         obj.save()
         return obj
 
-    # def post(self, **kwargs):
 
+def load_schedules(request):
+    class_id = request.GET.get('class_field')
+    schedules_year = Schedule.objects.filter(class_field_id=int(class_id))
+    return render(request, 'lessons_panel/schedules_dropdown_list.html', {'schedules_year': schedules_year})
+
+
+def load_schedule_panel(request):
+    schedule_id = request.GET.get('schedule')
+    schedule_object = Schedule.objects.get(id=schedule_id)
+    school_id = schedule_object.school_id
+    lessons_list = schedule_object.lesson_set.all()
+    max_lessons, school_object, work_dict = make_schedule_panel(school_id)
+    return render(request, 'lessons_panel/schedule_panel.html', {'schedule_selected': schedule_object,
+                                                                 'lessons_list': lessons_list,
+                                                                 'school_object': school_object,
+                                                                 'max_lessons': range(1, max_lessons + 1),
+                                                                 'work_dict': work_dict})
+
+    # def post(self, **kwargs):
 
     # def form_valid(self, form):
     #     obj = form.save(commit=False)

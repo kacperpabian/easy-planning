@@ -6,67 +6,77 @@
 {% endblock %}
 
 {% block body %}
-    {% include 'start_page/messages_template.html' %}
     {% include 'start_page/error_template.html' %}
 
     <div>
-{#        <div class="panel panel-group col-md-2" >#}
-{#            <div class="panel-heading">#}
-{#                <h4 style="text-align: center;">Wybór klasy</h4>#}
-{#            </div>#}
-{#            <div class="panel panel-default">#}
-{#                <div class="panel-body">#}
-{#                    {% render_table table %}#}
-{#                </div>#}
-{#            </div>#}
-{#        </div>#}
-        <div class="panel panel-group col-md-offset-2 col-md-2">
+        <form id="lesson_form"
+          data-schedules-url="{% url 'start_page:schools:lessons_panel:ajax_load_schedules' %}"
+          class="form-horizontal" method="post">
+        <div class="panel panel-default col-md-2">
             <div class="panel-heading">
-                <h4 style="text-align: center;">Rok</h4>
+                <h3 style="text-align: center;">Wybierz plan</h3>
             </div>
-{#            <div class="panel panel-default">#}
-{#                <div class="panel-body">#}
-{#                    <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">#}
-{#                        {% csrf_token %}#}
-{#                        <div class="form-group">#}
-{#                            {{ schedule_date }}#}
-{#                        </div>#}
-{#                    </form>#}
-{#                    {% for field in schedule_object %}#}
-{#                        {{ field }}#}
-{#                    {% endfor %}#}
-{#                </div>#}
-{#            </div>#}
+            <div class="panel-body">
+                {% csrf_token %}
+                {% include 'lessons_panel/form_schedule_class.html' %}
+            </div>
         </div>
-        <div class="panel panel-group col-md-offset-8 col-md-2">
-            <div class="row">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 style="text-align: center;">Dodawanie lekcji</h3>
-                    </div>
-                    <div class="panel panel-default">
-                        <div class="col-md-offset-1 col-md-10">
-                            <div class="panel-body">
-                                <form class="form-horizontal" action="" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {% include 'lessons_panel/form_template_lessons.html' %}
-                                    <div class="form-group">
-                                        {{ schedule_object }}
-                                    </div>
-                                    <div class="form-group">
-                                        {{ schedule_dates }}
-                                    </div>
-                                    <div class="form-group">
-                                        <button type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8
-                                        col-sm-offset-2 col-sm-8 ">Dodaj</button>
-                                    </div>
-                                </form>
+            <div id="schedule_panel"
+                  data-schedule-panel="{% url 'start_page:schools:lessons_panel:ajax_load_schedule_panel' %}">
+                {% include 'lessons_panel/schedule_panel.html' %}
+            </div>
+
+        <div class="panel panel-default col-md-2">
+            {% include 'start_page/messages_template.html' %}
+            <div class="panel-heading">
+                <h3 style="text-align: center;">Dodawanie lekcji</h3>
+            </div>
+            <div class="panel panel-default">
+                <div class="col-md-offset-1 col-md-10">
+                    <div class="panel-body">
+                            {% csrf_token %}
+                            {% include 'lessons_panel/form_template_lessons.html' %}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8
+                                col-sm-offset-2 col-sm-8 ">Dodaj</button>
                             </div>
-                        </div>
+                            <script>
+                                $("#id_class_field").change(function () {
+                                  let url = $("#lesson_form").attr("data-schedules-url");  // get the url of the `load_cities` view
+                                  let classId = $(this).val();  // get the selected country ID from the HTML input
+
+                                  $.ajax({                       // initialize an AJAX request
+                                    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                                    data: {
+                                      'class_field': classId       // add the country id to the GET parameters
+                                    },
+                                    success: function (data) {   // `data` is the return of the `load_cities` view function
+                                      $("#id_schedule").html(data);  // replace the contents of the city input with the data that came from the server
+                                    }
+                                  });
+
+                                });
+                                $("#id_schedule").change(function () {
+                                    let url = $("#schedule_panel").attr("data-schedule-panel");
+                                    let scheduleId = $(this).val();
+
+                                    $.ajax({                       // initialize an AJAX request
+                                    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+                                    data: {
+                                      'schedule': scheduleId       // add the country id to the GET parameters
+                                    },
+                                    success: function (data) {   // `data` is the return of the `load_cities` view function
+                                      $("#schedule_panel").html(data);  // replace the contents of the city input with the data that came from the server
+
+                                    }
+                                  });
+                                });
+                            </script>
                     </div>
                 </div>
             </div>
         </div>
+        </form>
     </div>
 
 {% endblock %}
