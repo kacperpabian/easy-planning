@@ -27,7 +27,7 @@ class Schedule(models.Model):
         return reverse('start_page:schools')
 
     def __str__(self):
-        return str(self.year.year)
+        return str(self.year.year) + " (" + self.name + ")"
 
     class Meta:
         managed = True

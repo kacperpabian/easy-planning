@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.contrib import messages
 from django import forms as django_forms
 import logging
@@ -15,47 +15,6 @@ from classes_app.models import Class
 from schedules.models import Schedule, ScheduleDate
 from schedules.forms import ScheduleDateForm
 
-
-# class SelectYear(generic.ListView):
-#     model = School
-#     paginate_by = 5
-#
-#     def get_context_data(self, *, object_list=None, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['dates'] = [(for date in School._meta.)]
-
-
-# class SelectClass(generic.CreateView):
-#     template_name = 'lessons_panel/lesson_add.html'
-#     lesson_form_class = LessonForm
-#
-#     def post(self, request, *args, **kwargs):
-#         post_data = request.POST or None
-#         lesson_form = self.lesson_form_class(post_data, prefix='lesson_form')
-#         class_object = Class.objects.get(id=kwargs['pk'])
-#         # school_object = School.objects.filter(class__id=kwargs['pk'])
-#         # breakes_form = self.breakes_form_class(post_data, prefix='breakes_form')
-#         table = ClassTable(Class.objects.filter(school_id=class_object.school_id))
-#
-#         context = self.get_context_data(lesson_form=lesson_form, table=table)
-#
-#         if lesson_form.is_valid():
-#             self.form_save(lesson_form, class_object.school_id)
-#         # if breakes_form.is_valid():
-#         #     self.form_save(breakes_form)
-#
-#         return self.render_to_response(context)
-#
-#     def get(self, request, *args, **kwargs):
-#         return self.post(request, *args, **kwargs)
-#
-#     def form_save(self, form, school_id):
-#         obj = form.save()
-#         obj.created_by = self.request.user
-#         obj.school_id = school_id
-#         # obj.class_id = self.kwargs['pk']
-#         # messages.success(self.request, "{} saved successfully".format(obj.class_id))
-#         return obj
 
 def make_schedule_panel(pk):
     days_dict = {1: "Pon", 2: "Wt", 3: "Śr", 4: "Czw", 5: "Pt", 6: "Sob", 7: "Nie"}
@@ -135,8 +94,11 @@ def load_schedule_panel(request):
                 if_inside = False
                 for lesson in lessons_list:
                     if lesson.lesson_number == i and lesson.day == key and not if_inside:
+                        delete_url = reverse('start_page:schools:lessons_panel:lesson_delete', args=[lesson.id])
                         table_string += "<td>" + lesson.subject.short_name + "<br>" + \
-                                        lesson.room.room_number + "</td>"
+                                        lesson.room.room_number + \
+                                        "<a href=\"" + delete_url + "\" " \
+                                        "type='button' class='btn'><span aria-hidden='true'>&times;</span></a></td>"
                         if_inside = True
                 if not if_inside:
                     table_string += "<td></td>"
@@ -147,10 +109,18 @@ def load_schedule_panel(request):
                                                                  'max_lessons': range(1, max_lessons + 1),
                                                                  'schedule_panel': table_string})
 
-    # def post(self, **kwargs):
 
-    # def form_valid(self, form):
-    #     obj = form.save(commit=False)
-    #     obj.created_by = self.request.user
-    #     obj.user_id = self.request.user.id
-    #     return super(SchoolCreate, self).form_valid(form)
+class LessonDelete(generic.DeleteView):
+    model = Lesson
+    template_name = "lessons_panel/lesson_delete.html"
+
+    def get_context_data(self, **kwargs):
+        school_id = self.object.school_id
+        context = super(LessonDelete, self).get_context_data(**kwargs)
+        context['school'] = get_object_or_404(School, id=school_id)
+        context['lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('pk', ))
+        return context
+
+    # def get_success_url(self):
+    #     school_id = self.object.school_id
+    #     return reverse_lazy('start_page:schools:lessons_panel:lessons-panel', kwargs={'pk': school_id})

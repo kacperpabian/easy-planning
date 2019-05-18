@@ -14,5 +14,5 @@ urlpatterns = [
     path('rooms/', include('rooms.urls')),
     path('teachers/', include('teachers.urls')),
     path('classes/', include('classes_app.urls')),
-    path('lessons_panel/', include('lessons_panel.urls'))
+    path('lessons-panel/', include('lessons_panel.urls'))
 ]
