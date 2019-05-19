@@ -2,3 +2,6 @@
 {% block back-href %}
     href={% url 'start_page:schools:lessons_panel:lessons-panel' school.id %}
 {% endblock %}
+{% block name-delete %}
+    lekcje {{ object.lesson_number }} <br> z klasą {{ object.class_field.name }} w pokoju {{ object.room.room_number }}
+{% endblock %}

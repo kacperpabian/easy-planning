@@ -97,7 +97,7 @@ def load_schedule_panel(request):
                         delete_url = reverse('start_page:schools:lessons_panel:lesson_delete', args=[lesson.id])
                         table_string += "<td>" + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
-                                        "<a href=\"" + delete_url + "\" " \
+                                        "<br><a href=\"" + delete_url + "\" " \
                                         "type='button' class='btn'><span aria-hidden='true'>&times;</span></a></td>"
                         if_inside = True
                 if not if_inside:
@@ -115,12 +115,12 @@ class LessonDelete(generic.DeleteView):
     template_name = "lessons_panel/lesson_delete.html"
 
     def get_context_data(self, **kwargs):
-        school_id = self.object.school_id
+        school_id = self.object.schedule.school_id
         context = super(LessonDelete, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=school_id)
         context['lesson'] = get_object_or_404(Lesson, id=self.kwargs.get('pk', ))
         return context
 
-    # def get_success_url(self):
-    #     school_id = self.object.school_id
-    #     return reverse_lazy('start_page:schools:lessons_panel:lessons-panel', kwargs={'pk': school_id})
+    def get_success_url(self):
+        school_id = self.object.schedule.school_id
+        return reverse_lazy('start_page:schools:lessons_panel:lessons-panel', kwargs={'pk': school_id})
