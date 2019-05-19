@@ -35,14 +35,23 @@ class LessonForm(forms.ModelForm):
 
 
 class ScheduleCombo(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         school_pk = kwargs.pop('school_pk', None)
+        class_id = kwargs.pop('class_id', None)
+        schedule_id = kwargs.pop('schedule_id', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         if school_pk is not None:
             school = School.objects.get(id=school_pk)
-            self.fields['class_field'].queryset = school.class_set.all()
-            self.fields['schedule'].queryset = school.schedule_set.none()
+            class_field = self.fields['class_field']
+            class_field.queryset = school.class_set.all()
+            if class_id:
+                class_field.initial = class_id
+            schedule_field = self.fields['schedule']
+            if schedule_id and class_id:
+                schedule_field.queryset = Schedule.objects.filter(class_field_id=int(class_id))
+                schedule_field.initial = schedule_id
+            else:
+                schedule_field.queryset = school.schedule_set.none()
 
         if 'schedule' in self.data:
             try:

@@ -33,7 +33,15 @@ class LessonsPanelView(generic.TemplateView):
     # lesson_form_class = LessonForm
 
     def get(self, request, pk, *args, **kwargs):
-        schedules = ScheduleCombo(school_pk=pk)
+        # if kwargs.pop('class_value'):
+        class_id = kwargs.pop('class_value', None)
+        # else:
+        if not class_id:
+            class_id = request.COOKIES.get('class_value')
+        schedule_id = kwargs.pop('schedule_value', None)
+        if not schedule_id:
+            schedule_id = request.COOKIES.get('schedule_value')
+        schedules = ScheduleCombo(school_pk=pk, class_id=class_id, schedule_id=schedule_id)
         max_lessons, school_object, work_dict = make_schedule_panel(pk)
         lesson_form = LessonForm(work_dict=work_dict, max_lessons=max_lessons)
 
@@ -59,7 +67,10 @@ class LessonsPanelView(generic.TemplateView):
             if lesson_form.is_valid():
                 self.form_save(lesson_form, class_id, schedule_id)
                 messages.success(request, "Dodano lekcje")
-                return self.get(request, pk)
+                response = self.get(request, pk, class_value=class_id, schedule_value=schedule_id)
+                response.set_cookie("class_value", class_id)
+                response.set_cookie("schedule_value", schedule_id)
+                return response
         return self.get(request, pk)
 
     def form_save(self, form, class_id, schedule_id):

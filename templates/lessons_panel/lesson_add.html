@@ -37,46 +37,63 @@
                             {% csrf_token %}
                             {% include 'lessons_panel/form_template_lessons.html' %}
                             <div class="form-group">
-                                <button type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8
+                                <form action=""></form>
+                                <button id="add_button" type="submit" class="btn btn-info col-lg-offset-2 col-lg-8 col-md-offset-2 col-md-8 col-xs-offset-2 col-xs-8
                                 col-sm-offset-2 col-sm-8 ">Dodaj</button>
                             </div>
-                            <script>
-                                $("#id_class_field").change(function () {
-                                  let url = $("#lesson_form").attr("data-schedules-url");  // get the url of the `load_cities` view
-                                  let classId = $(this).val();  // get the selected country ID from the HTML input
-
-                                  $.ajax({                       // initialize an AJAX request
-                                    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-                                    data: {
-                                      'class_field': classId       // add the country id to the GET parameters
-                                    },
-                                    success: function (data) {   // `data` is the return of the `load_cities` view function
-                                      $("#id_schedule").html(data);  // replace the contents of the city input with the data that came from the server
-                                    }
-                                  });
-
-                                });
-                                $("#id_schedule").change(function () {
-                                    let url = $("#schedule_panel").attr("data-schedule-panel");
-                                    let scheduleId = $(this).val();
-
-                                    $.ajax({                       // initialize an AJAX request
-                                    url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
-                                    data: {
-                                      'schedule': scheduleId       // add the country id to the GET parameters
-                                    },
-                                    success: function (data) {   // `data` is the return of the `load_cities` view function
-                                      $("#schedule_panel").html(data);  // replace the contents of the city input with the data that came from the server
-
-                                    }
-                                  });
-                                });
-                            </script>
                     </div>
                 </div>
             </div>
         </div>
         </form>
     </div>
+
+    <script>
+        let schedule_field = $("#id_schedule");
+        $("#id_class_field").change(function () {
+          let url = $("#lesson_form").attr("data-schedules-url");  // get the url of the `load_cities` view
+          let classId = $(this).val();  // get the selected country ID from the HTML input
+          $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'class_field': classId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+              schedule_field.html(data);  // replace the contents of the city input with the data that came from the server
+            }
+          });
+
+        });
+        if(schedule_field.val()){
+            let url = $("#schedule_panel").attr("data-schedule-panel");
+            let scheduleId = schedule_field.val();
+
+            $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'schedule': scheduleId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+              $("#schedule_panel").html(data);  // replace the contents of the city input with the data that came from the server
+
+            }
+          });
+        }
+        schedule_field.change(function () {
+            let url = $("#schedule_panel").attr("data-schedule-panel");
+            let scheduleId = $(this).val();
+
+            $.ajax({                       // initialize an AJAX request
+            url: url,                    // set the url of the request (= localhost:8000/hr/ajax/load-cities/)
+            data: {
+              'schedule': scheduleId       // add the country id to the GET parameters
+            },
+            success: function (data) {   // `data` is the return of the `load_cities` view function
+              $("#schedule_panel").html(data);  // replace the contents of the city input with the data that came from the server
+
+            }
+          });
+        });
+    </script>
 
 {% endblock %}
