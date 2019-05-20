@@ -30,12 +30,8 @@ def make_schedule_panel(pk):
 class LessonsPanelView(generic.TemplateView):
     template_name = 'lessons_panel/lesson_add.html'
 
-    # lesson_form_class = LessonForm
-
     def get(self, request, pk, *args, **kwargs):
-        # if kwargs.pop('class_value'):
         class_id = kwargs.pop('class_value', None)
-        # else:
         if not class_id:
             class_id = request.COOKIES.get('class_value')
         schedule_id = kwargs.pop('schedule_value', None)
