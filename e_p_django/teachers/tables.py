@@ -7,10 +7,10 @@ class TeacherTable(tables.Table):
     name = tables.Column(verbose_name='Imię')
     surname = tables.Column(verbose_name='Nazwisko')
 
-    deatils = tables.TemplateColumn(
-        verbose_name='Szczegóły',
-        template_name='teachers/button_details_teacher.html'
-    )
+    # deatils = tables.TemplateColumn(
+    #     verbose_name='Szczegóły',
+    #     template_name='teachers/button_details_teacher.html'
+    # )
 
     delete = tables.TemplateColumn(
         verbose_name='Usuń',

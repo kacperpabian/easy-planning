@@ -6,7 +6,7 @@ from schools.models import School
 
 class Room(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
-    room_number = models.CharField(unique=True, max_length=10)
+    room_number = models.CharField(unique=False, max_length=10)
     capacity = models.IntegerField()
 
     def __str__(self):

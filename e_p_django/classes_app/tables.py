@@ -7,10 +7,10 @@ class ClassTable(tables.Table):
     name = tables.Column(verbose_name='Nazwa')
     short_name = tables.Column(verbose_name='Skrócona nazwa')
 
-    deatils = tables.TemplateColumn(
-        verbose_name='Szczegóły',
-        template_name='classes_templates/button_details_class.html'
-    )
+    # deatils = tables.TemplateColumn(
+    #     verbose_name='Szczegóły',
+    #     template_name='classes_templates/button_details_class.html'
+    # )
 
     delete = tables.TemplateColumn(
         verbose_name='Usuń',

@@ -2,3 +2,6 @@
 {% block back-href %}
     href={% url 'start_page:schools:rooms:rooms' school.id %}
 {% endblock %}
+{% block name-delete %}
+    pokój nr {{ object.room_number }}
+{% endblock %}

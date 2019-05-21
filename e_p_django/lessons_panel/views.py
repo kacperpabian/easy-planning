@@ -102,10 +102,14 @@ def load_schedule_panel(request):
                 for lesson in lessons_list:
                     if lesson.lesson_number == i and lesson.day == key and not if_inside:
                         delete_url = reverse('start_page:schools:lessons_panel:lesson_delete', args=[lesson.id])
-                        table_string += "<td>" + lesson.subject.short_name + "<br>" + \
+                        table_string += "<td><div>" + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
-                                        "<br><a href=\"" + delete_url + "\" " \
-                                        "type='button' class='btn'><span aria-hidden='true'>&times;</span></a></td>"
+                                        "<br>" \
+                                        "<a href=\"" + delete_url + "\" " \
+                                        "type='button' class='btn fas fa-edit'><span aria-hidden='true'></span></a>" \
+                                        "<a href=\"" + delete_url + "\" " \
+                                        "type='button' class='btn'>" \
+                                        "<span aria-hidden='true'>&times;</span></a></div></td>"
                         if_inside = True
                 if not if_inside:
                     table_string += "<td></td>"
