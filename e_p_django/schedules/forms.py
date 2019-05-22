@@ -5,7 +5,6 @@ from classes_app.models import Class
 
 
 class ScheduleForm(forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         school_pk = kwargs.pop('school_pk', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)

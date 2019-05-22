@@ -19,7 +19,9 @@
             <div class="panel-body">
                 {% csrf_token %}
                 {% include 'lessons_panel/form_schedule_class.html' %}
+
             </div>
+
         </div>
             <div id="schedule_panel"
                   data-schedule-panel="{% url 'start_page:schools:lessons_panel:ajax_load_schedule_panel' %}">

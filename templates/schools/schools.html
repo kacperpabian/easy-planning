@@ -17,7 +17,7 @@
                         <a href="{% url 'start_page:schools:rooms:rooms' school.id %}" type="button" class="btn btn-info col-md-2">Pokoje</a>
                         <a href="{% url 'start_page:schools:teachers:teachers' school.id %}" type="button" class="btn btn-info col-md-2">Nauczyciele</a>
                         <a href="{% url 'start_page:schools:classes_app:classes' school.id %}" type="button" class="btn btn-info col-md-2">Klasy</a>
-                        <a href="{% url 'start_page:schools:schedules:schedule-create' school.id %}" type="button" class="btn btn-primary col-md-2">Dodaj plan</a>
+                        <a href="{% url 'start_page:schools:schedules:schedules' school.id %}" type="button" class="btn btn-primary col-md-2">Dodaj plan</a>
                     </div>
                     {% if school %}
                         <div class="panel-body col-md-offset-2">

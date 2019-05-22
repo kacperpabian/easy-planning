@@ -2,11 +2,32 @@ from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRe
 from django.views import generic
 from django.contrib import messages
 from django.urls import reverse_lazy
+from django_tables2 import (
+    SingleTableView,
+    LazyPaginator
+)
 
 from .models import Schedule
 from .models import ScheduleDate
+from .tables import ScheduleTable
 from schools.models import School
 from . import forms
+
+
+class ScheduleView(SingleTableView):
+    model = Schedule
+    template_name = 'schedules/schedules.html'
+    table_class = ScheduleTable
+    paginator_class = LazyPaginator
+
+    def get_context_data(self, **kwargs):
+        context = super(ScheduleView, self).get_context_data(**kwargs)
+        context['school'] = get_object_or_404(School, id=self.kwargs.get('pk', ))
+        return context
+
+    def get_queryset(self):
+        school = get_object_or_404(School, id=self.kwargs.get('pk', ))
+        return Schedule.objects.filter(school_id=school.id)
 
 
 class ScheduleCreate(generic.TemplateView):
@@ -70,5 +91,23 @@ class ScheduleDelete(generic.DeleteView):
 
     def get_success_url(self):
         school_id = self.object.school_id
-        return reverse_lazy('start_page:schools', kwargs={'pk': school_id})
+        return reverse_lazy('start_page:schools:schedules:schedules', kwargs={'pk': school_id})
 # Create your views here.
+
+
+class ScheduleUpdate(generic.UpdateView):
+    model = Schedule
+    form_class = forms.ScheduleForm
+    template_name = "schedules/schedule_edit.html"
+    template_name_suffix = '_update_form'
+
+    def post(self, request, **kwargs):
+        form = self.form_class(request.POST, instance=self.get_object())
+        if form.is_valid():
+            if form.changed_data:
+                room = form.save(commit=False)
+                room.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': form})

@@ -59,7 +59,6 @@ class LessonsPanelView(generic.TemplateView):
         if schedules.is_valid():
             class_id = post_data['class_field']
             schedule_id = post_data['schedule']
-            errors = lesson_form.errors
             if lesson_form.is_valid():
                 self.form_save(lesson_form, class_id, schedule_id)
                 messages.success(request, "Dodano lekcje")
@@ -102,10 +101,11 @@ def load_schedule_panel(request):
                 for lesson in lessons_list:
                     if lesson.lesson_number == i and lesson.day == key and not if_inside:
                         delete_url = reverse('start_page:schools:lessons_panel:lesson_delete', args=[lesson.id])
+                        update_url = reverse('start_page:schools:lessons_panel:lesson_update', args=[lesson.id])
                         table_string += "<td><div>" + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
                                         "<br>" \
-                                        "<a href=\"" + delete_url + "\" " \
+                                        "<a href=\"" + update_url + "\" " \
                                         "type='button' class='btn fas fa-edit'><span aria-hidden='true'></span></a>" \
                                         "<a href=\"" + delete_url + "\" " \
                                         "type='button' class='btn'>" \
@@ -135,3 +135,38 @@ class LessonDelete(generic.DeleteView):
     def get_success_url(self):
         school_id = self.object.schedule.school_id
         return reverse_lazy('start_page:schools:lessons_panel:lessons-panel', kwargs={'pk': school_id})
+
+
+class LessonUpdate(generic.UpdateView):
+    model = Lesson
+    template_name = "lessons_panel/lesson_edit.html"
+    template_name_suffix = '_update_form'
+    form_class = LessonForm
+
+    def get_context_data(self, **kwargs):
+        lesson_object = Lesson.objects.get(pk=self.kwargs['pk'])
+        schedule_object = lesson_object.schedule
+        school_id = schedule_object.school_id
+        context = super(LessonUpdate, self).get_context_data(**kwargs)
+        context['school'] = get_object_or_404(School, id=school_id)
+        return context
+
+    def get_success_url(self):
+        school_id = self.object.schedule.school_id
+        return reverse_lazy('start_page:schools:lessons_panel:lessons-panel', kwargs={'pk': school_id})
+
+    def post(self, request, **kwargs):
+        lesson_form = self.form_class(request.POST, instance=self.get_object())
+        if lesson_form.is_valid():
+            if lesson_form.changed_data:
+                obj = lesson_form.save(commit=False)
+                lesson_object = Lesson.objects.get(pk=self.kwargs['pk'])
+                schedule_object = Schedule.objects.get(pk=lesson_object.schedule_id)
+                class_object = lesson_object.class_field
+                obj.class_field_id = class_object.id
+                obj.schedule_id = schedule_object.id
+                obj.save()
+                messages.success(request, "Pomyślnie zaktualizowano informacje")
+            else:
+                messages.warning(request, "Nic nie zostało zmienione.")
+        return render(request, self.template_name, {'form': lesson_form})

@@ -8,12 +8,12 @@ class ScheduleTable(tables.Table):
     description = tables.Column(verbose_name='Opis')
     delete = tables.TemplateColumn(
         verbose_name='Usuń',
-        template_name='button_templates/button_delete_schedule.html'
+        template_name='schedules/button_delete_schedule.html'
     )
 
     edit = tables.TemplateColumn(
         verbose_name='Edytuj',
-        template_name='button_templates/button_edit_schedule.html'
+        template_name='schedules/button_edit_schedule.html'
     )
 
     class Meta:
