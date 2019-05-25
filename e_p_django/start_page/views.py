@@ -4,7 +4,7 @@ from django.contrib.auth import authenticate, login, get_user
 from django.views import generic
 
 from .forms import UserFormRegister, UserFormLogin
-from schools import models
+from e_p_django.schools import models
 
 
 class UserLoginView(generic.View):
