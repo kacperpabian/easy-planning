@@ -1,7 +1,7 @@
 from django import forms
 
 from .models import Schedule, ScheduleDate
-from classes_app.models import Class
+from e_p_django.classes_app.models import Class
 
 
 class ScheduleForm(forms.ModelForm):

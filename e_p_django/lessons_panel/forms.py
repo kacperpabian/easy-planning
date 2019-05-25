@@ -1,8 +1,8 @@
 from django import forms
 
 from .models import Lesson
-from schedules.models import Schedule
-from schools.models import School
+from e_p_django.schedules.models import Schedule
+from e_p_django.schools.models import School
 
 
 class LessonForm(forms.ModelForm):
