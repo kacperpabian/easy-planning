@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_tables2',
 
-    'start_page',
+    'e_p_django.start_page',
     'schools',
     'user_profile',
     'classes_app',
