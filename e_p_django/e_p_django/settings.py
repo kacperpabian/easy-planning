@@ -14,7 +14,7 @@ import os
 import dj_database_url
 from django.contrib.messages import constants as messages
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.e_p_django.settings'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
@@ -35,7 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
                  '185.24.216.166',
-                 'e_p_django.e_p_django.herokuapp.com']
+                 'easy-planning-kp.herokuapp.com']
 
 INTERNAL_IPS = ['localhost',
                 '185.24.216.166',
