@@ -55,11 +55,15 @@ class ScheduleCreate(generic.TemplateView):
             year = schedule_date_form.cleaned_data["year"]
             if ScheduleDate.objects.filter(year=year).count() < 1:
                 self.form_save_date(schedule_date_form)
-            self.form_save_schedule(
-                schedule_form,
-                ScheduleDate.objects.get(year=str(year)).id,
-                pk
-                )
+                self.form_save_schedule(
+                    schedule_form,
+                    ScheduleDate.objects.get(year=str(year)).id,
+                    pk
+                    )
+                messages.success(request, "Dodano plan")
+            else:
+                messages.warning(request, "Błąd roku. Nie dodano planu.")
+
         return self.get(request, pk)
 
     def form_save_date(self, form):

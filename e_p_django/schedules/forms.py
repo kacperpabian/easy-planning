@@ -18,7 +18,7 @@ class ScheduleForm(forms.ModelForm):
             'class_field': 'Klasa'
         }
         model = Schedule
-        fields = ['name', 'description', 'class_field']
+        fields = ['name', 'description', 'class_field', 'year']
 
 
 class ScheduleDateForm(forms.ModelForm):
