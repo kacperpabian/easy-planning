@@ -17,7 +17,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 # noinspection PyUnresolvedReferences
-from start_page.views import UserLoginView
+from e_p_django.start_page.views import UserLoginView
 
 urlpatterns = [
     path('schools/', include('start_page.urls')),
