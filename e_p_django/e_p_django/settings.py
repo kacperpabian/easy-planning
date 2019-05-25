@@ -24,7 +24,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '=5e-_)pbe_r1d^rdcwu6tw1)2%3976l3kvbr@5q+rh$erpfo&w'
-SESSION_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
