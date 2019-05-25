@@ -10,7 +10,7 @@ from django_tables2 import (
 from .forms import SubjectForm
 from .models import Subject
 from .tables import SubjectTable
-from schools.models import School
+from e_p_django.schools.models import School
 
 
 class SubjectsView(SingleTableView):

@@ -10,10 +10,10 @@ from .forms import LessonForm
 from .forms import ScheduleCombo
 from .models import Lesson
 from .tables import ClassTable
-from schools.models import School
-from classes_app.models import Class
-from schedules.models import Schedule, ScheduleDate
-from schedules.forms import ScheduleDateForm
+from e_p_django.schools.models import School
+from e_p_django.classes_app.models import Class
+from e_p_django.schedules.models import Schedule, ScheduleDate
+from e_p_django.schedules.forms import ScheduleDateForm
 
 
 def make_schedule_panel(pk):

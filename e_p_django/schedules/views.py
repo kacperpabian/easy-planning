@@ -10,7 +10,7 @@ from django_tables2 import (
 from .models import Schedule
 from .models import ScheduleDate
 from .tables import ScheduleTable
-from schools.models import School
+from e_p_django.schools.models import School
 from . import forms
 
 

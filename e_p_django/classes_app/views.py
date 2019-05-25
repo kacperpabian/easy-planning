@@ -11,7 +11,7 @@ from django_tables2 import (
 from .forms import ClassForm
 from .models import Class
 from .tables import ClassTable
-from schools.models import School
+from e_p_django.schools.models import School
 
 
 class ClassCreate(generic.CreateView):

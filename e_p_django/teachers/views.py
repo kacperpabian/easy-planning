@@ -10,7 +10,7 @@ from django_tables2 import (
 from .forms import TeacherForm
 from .models import Teacher
 from .tables import TeacherTable
-from schools.models import School
+from e_p_django.schools.models import School
 
 
 class TeacherCreate(generic.CreateView):

@@ -11,7 +11,7 @@ from django_tables2 import (
 from .forms import RoomForm
 from .models import Room
 from .tables import RoomsTable
-from schools.models import School
+from e_p_django.schools.models import School
 
 
 class RoomCreate(generic.CreateView):

@@ -1,11 +1,11 @@
 from django.db import models
 from django.urls import reverse
 
-from classes_app.models import Class
-from schedules.models import Schedule
-from rooms.models import Room
-from subjects.models import Subject
-from teachers.models import Teacher
+from e_p_django.classes_app.models import Class
+from e_p_django.schedules.models import Schedule
+from e_p_django.rooms.models import Room
+from e_p_django.subjects.models import Subject
+from e_p_django.teachers.models import Teacher
 
 
 class Group(models.Model):

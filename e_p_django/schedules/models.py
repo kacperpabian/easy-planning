@@ -1,8 +1,8 @@
 from django.db import models
 from django.urls import reverse
 
-from schools.models import School
-from classes_app.models import Class
+from e_p_django.schools.models import School
+from e_p_django.classes_app.models import Class
 
 
 class ScheduleDate(models.Model):
