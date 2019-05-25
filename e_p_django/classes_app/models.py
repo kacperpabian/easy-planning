@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from schools.models import School
+from e_p_django.schools.models import School
 
 
 class Class(models.Model):
