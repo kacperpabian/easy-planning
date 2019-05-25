@@ -1,1 +1,1 @@
-web: gunicorn easy-planning-kp.wsgi --log-file -
+web: gunicorn e_p_django.wsgi --log-file -
