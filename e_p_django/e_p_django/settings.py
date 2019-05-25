@@ -144,10 +144,10 @@ WSGI_APPLICATION = 'e_p_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'epdb',
-        'USER': 'epuser',
+        'NAME': 'ep_db',
+        'USER': 'ep_user',
         'PASSWORD': os.environ.get('ep_db_pass'),
-        'HOST': '185.24.216.166',
+        'HOST': '35.198.149.54',
         'PORT': "5432",
     }
 }
