@@ -35,7 +35,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
                  '185.24.216.166',
-                 'easy-planning-kp.herokuapp.com']
+                 'e_p_django.e_p_django.herokuapp.com']
 
 INTERNAL_IPS = ['localhost',
                 '185.24.216.166',
@@ -181,6 +181,6 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOGIN_REDIRECT_URL = '/schools'
 LOGOUT_REDIRECT_URL = '/'
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
