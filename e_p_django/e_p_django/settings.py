@@ -14,10 +14,10 @@ import os
 import dj_database_url
 from django.contrib.messages import constants as messages
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.e_p_django.settings'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.settings'
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-PROJECT_ROOT = os.path.normpath(os.path.join(os.path.dirname(__file__), '../..'))
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
@@ -107,7 +107,7 @@ ROOT_URLCONF = 'e_p_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(PROJECT_ROOT, 'templates')],
+        'DIRS': [os.path.join(PROJECT_ROOT, '../../templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -178,9 +178,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
+STATIC_ROOT = os.path.join(PROJECT_ROOT, '../start_page/static')
 LOGIN_REDIRECT_URL = '/schools'
 LOGOUT_REDIRECT_URL = '/'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)

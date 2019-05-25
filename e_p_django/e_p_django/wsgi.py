@@ -16,6 +16,6 @@ path = '/Users/Student226123/Desktop/inzynierka/easy-planning/e_p_django'
 if path not in sys.path:
     sys.path.append(path)
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_p_django.e_p_django.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_p_django.settings')
 
 application = DjangoWhiteNoise(get_wsgi_application())
