@@ -1,7 +1,7 @@
 from django.urls import path, include
 
 from . import views
-from schools.views import SchoolView
+from e_p_django.schools.views import SchoolView
 
 
 app_name = 'start_page'

@@ -102,7 +102,7 @@ if DEBUG:
     DEBUG_TOOLBAR_CONFIG = {
         'RESULTS_CACHE_SIZE': 100}
 
-ROOT_URLCONF = 'e_p_django.urls'
+ROOT_URLCONF = 'e_p_django.e_p_django.urls'
 
 TEMPLATES = [
     {
