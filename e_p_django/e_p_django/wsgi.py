@@ -18,4 +18,4 @@ if path not in sys.path:
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_p_django.settings')
 
-application = DjangoWhiteNoise(application)
+application = DjangoWhiteNoise(get_wsgi_application())
