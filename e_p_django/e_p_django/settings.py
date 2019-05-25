@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.1/ref/settings/
 """
 
 import os
+import dj_database_url
 from django.contrib.messages import constants as messages
 
 os.environ['DJANGO_SETTINGS_MODULE'] = 'e_p_django.settings'
@@ -200,3 +201,5 @@ STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOGIN_REDIRECT_URL = '/schools'
 LOGOUT_REDIRECT_URL = '/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)

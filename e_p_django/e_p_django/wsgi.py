@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/2.1/howto/deployment/wsgi/
 import os, sys
 
 from django.core.wsgi import get_wsgi_application
+from whitenoise.django import DjangoWhiteNoise
 
 path = '/Users/Student226123/Desktop/inzynierka/easy-planning/e_p_django'
 if path not in sys.path:
@@ -17,4 +18,4 @@ if path not in sys.path:
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'e_p_django.settings')
 
-application = get_wsgi_application()
+application = DjangoWhiteNoise(application)
