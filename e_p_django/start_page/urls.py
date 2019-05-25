@@ -10,6 +10,6 @@ urlpatterns = [
     path('register', views.UserRegisterView.as_view(), name='register'),
     path('login', views.UserLoginView.as_view(), name='login'),
     path('', SchoolView.as_view(), name='schools'),
-    path('details/', include('schools.urls')),
-    path('profile/', include('user_profile.urls'))
+    path('details/', include('e_p_django.schools.urls')),
+    path('profile/', include('e_p_django.user_profile.urls'))
 ]
