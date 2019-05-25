@@ -54,15 +54,15 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'django_tables2',
 
-    'start_page',
-    'schools',
-    'user_profile',
-    'classes_app',
-    'teachers',
-    'rooms',
-    'subjects',
-    'schedules',
-    'lessons_panel'
+    'e_p_django.start_page',
+    'e_p_django.schools',
+    'e_p_django.user_profile',
+    'e_p_django.classes_app',
+    'e_p_django.teachers',
+    'e_p_django.rooms',
+    'e_p_django.subjects',
+    'e_p_django.schedules',
+    'e_p_django.lessons_panel'
 ]
 
 MIDDLEWARE = [
