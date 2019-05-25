@@ -33,7 +33,8 @@ CSRF_COOKIE_SECURE = True
 DEBUG = True
 
 ALLOWED_HOSTS = ['localhost',
-                 '185.24.216.166']
+                 '185.24.216.166',
+                 'easy-planning-kp.herokuapp.com']
 
 INTERNAL_IPS = ['localhost',
                 '185.24.216.166',
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -197,3 +199,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'static')
 LOGIN_REDIRECT_URL = '/schools'
 LOGOUT_REDIRECT_URL = '/'
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+import dj_database_url
+prod_db  =  dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(prod_db)
