@@ -84,13 +84,29 @@ def load_schedules(request):
 
 
 def load_schedule_panel(request):
+    color_directory = {1: "lightblue", 2: "lightgreen", 3: "lightyellow", 4: "lightpink",
+                       5: "tomato", 6: "lightseagreen", 7: "violet", 8: "LightGrey", 9: "aquamarine",
+                       10: "lightcoral", 11: "burlywood", 12: "lightsteelblue", 13: "mediumpurple", 14: "white"}
     schedule_id = request.GET.get('schedule')
     schedule_object = Schedule.objects.get(id=schedule_id)
     school_id = schedule_object.school_id
     lessons_list = schedule_object.lesson_set.all()
     max_lessons, school_object, work_dict = make_schedule_panel(school_id)
-    for lesson in lessons_list:
-        lesson.day = int(lesson.day)
+    assoc_col_name = {}
+    if lessons_list:
+        for lesson in lessons_list:
+            lesson.day = int(lesson.day)
+        i = 1
+        for lesson in lessons_list:
+            assoc_size = len(assoc_col_name)
+            if lesson.subject.short_name:
+                if lesson.subject.short_name not in assoc_col_name.values():
+                    assoc_col_name[i] = lesson.subject.short_name
+            else:
+                if lesson.subject.name not in assoc_col_name.values():
+                    assoc_col_name[i] = lesson.subject.name
+            if len(assoc_col_name) > assoc_size:
+                i += 1
     table_string = "<tbody id='table_body'>"
 
     for key, value in work_dict.items():
@@ -102,7 +118,19 @@ def load_schedule_panel(request):
                     if lesson.lesson_number == i and lesson.day == key and not if_inside:
                         delete_url = reverse('start_page:schools:lessons_panel:lesson_delete', args=[lesson.id])
                         update_url = reverse('start_page:schools:lessons_panel:lesson_update', args=[lesson.id])
-                        table_string += "<td><div>" + lesson.subject.short_name + "<br>" + \
+                        if lesson.subject.short_name:
+                            subject_name = lesson.subject.short_name
+                        else:
+                            subject_name = lesson.subject.name
+                        number_color = 14
+                        for number, name in assoc_col_name.items():
+                            if name == subject_name:
+                                number_color = number
+                                break
+                        color = color_directory[number_color]
+
+                        table_string += "<td><div style='background-color:"+color+";text-align: center;'>"\
+                                        + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
                                         "<br>" \
                                         "<a href=\"" + update_url + "\" " \
