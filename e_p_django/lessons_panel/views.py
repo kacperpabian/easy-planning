@@ -109,7 +109,7 @@ def load_schedule_panel(request):
                     assoc_col_name[i] = lesson.subject.name
             if len(assoc_col_name) > assoc_size:
                 i += 1
-    table_string = "<tbody id='table_body'>"
+    table_string = "<style> table, td, th { border: 1px solid lightgrey;}</style><tbody id='table_body'>"
 
     for key, value in work_dict.items():
         table_string += "<tr><td>" + value + "</td>"
@@ -131,7 +131,7 @@ def load_schedule_panel(request):
                                 break
                         color = color_directory[number_color]
 
-                        table_string += "<td><div style='background-color:" + color + ";text-align: center;'>" \
+                        table_string += "<td style='background-color:" + color + ";text-align: center;'><div>" \
                                         + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
                                         "<br>" + lesson.teacher.name + " " + lesson.teacher.surname + "<br>" + \
@@ -230,7 +230,7 @@ class Pdf(generic.View):
                         assoc_col_name[i] = lesson.subject.name
                 if len(assoc_col_name) > assoc_size:
                     i += 1
-        table_string = "<tbody id='table_body'>"
+        table_string = "<style> table, td, th { border: 1px solid black;}</style><tbody id='table_body'>"
 
         for key, value in work_dict.items():
             table_string += "<tr><td>" + value + "</td>"
@@ -250,7 +250,7 @@ class Pdf(generic.View):
                                     break
                             color = color_directory[number_color]
 
-                            table_string += "<td><div style='background-color:" + color + ";text-align: center;'>" \
+                            table_string += "<td style='background-color:" + color + ";text-align: center;'><div>" \
                                             + lesson.subject.short_name + "<br>" + \
                                             lesson.room.room_number + \
                                             "<br>" + lesson.teacher.name + " " + lesson.teacher.surname + "<br>" + \

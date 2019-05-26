@@ -1,6 +1,5 @@
 {% load if_lesson_added %}
 <meta http-equiv=Content-Type content="text/html;charset=utf-8">
-
 <div class="panel panel-default col-md-8">
     <div class="panel-heading">
         {% if schedule_selected.name %}
@@ -13,7 +12,7 @@
     <table style="font-family: Arial,serif" class="table">
         <thead class="thead-dark">
             <tr>
-                <th>PLAN</th>
+                <th></th>
                 {% for i in max_lessons %}
                     <th>{{ i }}</th>
                 {% endfor %}
