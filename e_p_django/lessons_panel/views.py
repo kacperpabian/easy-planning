@@ -5,6 +5,7 @@ from django.contrib import messages
 from django import forms as django_forms
 import logging
 import django_tables2 as tables
+from django.utils import timezone
 
 from .forms import LessonForm
 from .forms import ScheduleCombo
@@ -14,6 +15,7 @@ from schools.models import School
 from classes_app.models import Class
 from schedules.models import Schedule, ScheduleDate
 from schedules.forms import ScheduleDateForm
+from .render import Render
 
 
 def make_schedule_panel(pk):
@@ -129,12 +131,13 @@ def load_schedule_panel(request):
                                 break
                         color = color_directory[number_color]
 
-                        table_string += "<td><div style='background-color:"+color+";text-align: center;'>"\
+                        table_string += "<td><div style='background-color:" + color + ";text-align: center;'>" \
                                         + lesson.subject.short_name + "<br>" + \
                                         lesson.room.room_number + \
-                                        "<br>" \
+                                        "<br>" + lesson.teacher.name + " " + lesson.teacher.surname + "<br>" + \
                                         "<a href=\"" + update_url + "\" " \
-                                        "type='button' class='btn fas fa-edit'><span aria-hidden='true'></span></a>" \
+                                        "type='button' class='btn fas fa-edit'><span " \
+                                        "aria-hidden='true'></span></a>" \
                                         "<a href=\"" + delete_url + "\" " \
                                         "type='button' class='btn'>" \
                                         "<span aria-hidden='true'>&times;</span></a></div></td>"
@@ -142,7 +145,8 @@ def load_schedule_panel(request):
                 if not if_inside:
                     table_string += "<td></td>"
         table_string += "</tr>"
-    table_string += "</tbody>"
+    pdf_url = reverse('start_page:schools:lessons_panel:render_table', args=[schedule_id])
+    table_string += "</tbody><a href="+pdf_url+" type='button' class='btn btn-danger'>Export to pdf</a>"
 
     return render(request, 'lessons_panel/schedule_panel.html', {'schedule_selected': schedule_object,
                                                                  'max_lessons': range(1, max_lessons + 1),
@@ -198,3 +202,64 @@ class LessonUpdate(generic.UpdateView):
             else:
                 messages.warning(request, "Nic nie zostało zmienione.")
         return render(request, self.template_name, {'form': lesson_form})
+
+
+class Pdf(generic.View):
+
+    def get(self, request, *args, **kwargs):
+        color_directory = {1: "lightblue", 2: "lightgreen", 3: "lightyellow", 4: "lightpink",
+                           5: "tomato", 6: "lightseagreen", 7: "violet", 8: "LightGrey", 9: "aquamarine",
+                           10: "lightcoral", 11: "burlywood", 12: "lightsteelblue", 13: "mediumpurple", 14: "white"}
+        schedule_id = kwargs['pk']
+        schedule_object = Schedule.objects.get(id=schedule_id)
+        school_id = schedule_object.school_id
+        lessons_list = schedule_object.lesson_set.all()
+        max_lessons, school_object, work_dict = make_schedule_panel(school_id)
+        assoc_col_name = {}
+        if lessons_list:
+            for lesson in lessons_list:
+                lesson.day = int(lesson.day)
+            i = 1
+            for lesson in lessons_list:
+                assoc_size = len(assoc_col_name)
+                if lesson.subject.short_name:
+                    if lesson.subject.short_name not in assoc_col_name.values():
+                        assoc_col_name[i] = lesson.subject.short_name
+                else:
+                    if lesson.subject.name not in assoc_col_name.values():
+                        assoc_col_name[i] = lesson.subject.name
+                if len(assoc_col_name) > assoc_size:
+                    i += 1
+        table_string = "<tbody id='table_body'>"
+
+        for key, value in work_dict.items():
+            table_string += "<tr><td>" + value + "</td>"
+            if lessons_list:
+                for i in range(1, max_lessons + 1):
+                    if_inside = False
+                    for lesson in lessons_list:
+                        if lesson.lesson_number == i and lesson.day == key and not if_inside:
+                            if lesson.subject.short_name:
+                                subject_name = lesson.subject.short_name
+                            else:
+                                subject_name = lesson.subject.name
+                            number_color = 14
+                            for number, name in assoc_col_name.items():
+                                if name == subject_name:
+                                    number_color = number
+                                    break
+                            color = color_directory[number_color]
+
+                            table_string += "<td><div style='background-color:" + color + ";text-align: center;'>" \
+                                            + lesson.subject.short_name + "<br>" + \
+                                            lesson.room.room_number + \
+                                            "<br>" + lesson.teacher.name + " " + lesson.teacher.surname + "<br>" + \
+                                            "<br></div></td>"
+                            if_inside = True
+                    if not if_inside:
+                        table_string += "<td></td>"
+            table_string += "</tr>"
+        table_string += "</tbody>"
+        return Render.render('lessons_panel/schedule_panel.html', {'schedule_selected': schedule_object,
+                                                                   'max_lessons': range(1, max_lessons + 1),
+                                                                   'schedule_panel': table_string})

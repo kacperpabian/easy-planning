@@ -16,8 +16,12 @@ dj-database-url = "==0.5.0"
 gunicorn = "==19.9.0"
 whitenoise = "==3.3.1"
 django_select2 = "==7.0.3"
+"xhtml2pdf" = "*"
 
 [dev-packages]
 
 [requires]
 python_version = "3.6"
+
+[pipenv]
+allow_prereleases = true

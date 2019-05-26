@@ -23,7 +23,7 @@ class LessonForm(forms.ModelForm):
 
     class Meta:
         labels = {
-            'group': 'Grupa',
+            # 'group': 'Grupa',
             'subject': 'Przedmiot',
             'teacher': 'Prowadzący',
             'room': 'Pokój',
@@ -31,7 +31,7 @@ class LessonForm(forms.ModelForm):
             'day': 'Dzień'
         }
         model = Lesson
-        fields = ['group', 'subject', 'teacher', 'room', 'lesson_number', 'day']
+        fields = ['subject', 'teacher', 'room', 'lesson_number', 'day']
 
 
 class ScheduleCombo(forms.ModelForm):
