@@ -24,6 +24,7 @@ class ClassTable(tables.Table):
 
     class Meta:
         model = Class
+        per_page = 15
         fields = ['name', 'short_name']
         attrs = {
             'class': 'table-condensed align-middle',

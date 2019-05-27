@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from django_tables2 import (
     SingleTableView,
-    LazyPaginator
+    LazyPaginator,
+    RequestConfig
 )
 
 
@@ -35,11 +36,13 @@ class ClassView(SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(ClassView, self).get_context_data(**kwargs)
         context['school'] = get_object_or_404(School, id=self.kwargs.get('pk', ))
+        # RequestConfig(self.request,  paginate={'per_page': 10}).configure(self.table_class)
         return context
 
     def get_queryset(self):
         school = get_object_or_404(School, id=self.kwargs.get('pk', ))
         return Class.objects.filter(school_id=school.id)
+
 
 
 class ClassDelete(generic.DeleteView):

@@ -17,6 +17,7 @@ class ScheduleTable(tables.Table):
     )
 
     class Meta:
+        per_page = 15
         model = Schedule
         fields = ['name', 'description']
         attrs = {

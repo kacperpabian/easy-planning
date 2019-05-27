@@ -18,6 +18,7 @@ class SubjectTable(tables.Table):
 
     class Meta:
         model = Subject
+        per_page = 15
         fields = ['name', 'short_name']
         attrs = {
             'class': 'table-condensed align-middle',

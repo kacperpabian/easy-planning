@@ -1,20 +1,13 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.urls import reverse_lazy, reverse
 from django.contrib import messages
-from django import forms as django_forms
-import logging
-import django_tables2 as tables
-from django.utils import timezone
 
 from .forms import LessonForm
 from .forms import ScheduleCombo
 from .models import Lesson
-from .tables import ClassTable
 from schools.models import School
-from classes_app.models import Class
-from schedules.models import Schedule, ScheduleDate
-from schedules.forms import ScheduleDateForm
+from schedules.models import Schedule
 from .render import Render
 
 
@@ -109,7 +102,8 @@ def load_schedule_panel(request):
                     assoc_col_name[i] = lesson.subject.name
             if len(assoc_col_name) > assoc_size:
                 i += 1
-    table_string = "<style> table, td, th { border: 1px solid lightgrey;}</style><tbody id='table_body'>"
+    table_string = "<style>table,td,th{ table-layout: fixed; width: 100%; border: 1px solid lightgrey;}</style>" \
+                   "<tbody id='table_body'>"
 
     for key, value in work_dict.items():
         table_string += "<tr><td>" + value + "</td>"
@@ -230,7 +224,8 @@ class Pdf(generic.View):
                         assoc_col_name[i] = lesson.subject.name
                 if len(assoc_col_name) > assoc_size:
                     i += 1
-        table_string = "<style> table, td, th { border: 1px solid black;}</style><tbody id='table_body'>"
+        table_string = "<style>table,td,th{ table-layout: fixed; width: 100%; border: 1px solid lightgrey;}</style>" \
+                       "<tbody id='table_body'>"
 
         for key, value in work_dict.items():
             table_string += "<tr><td>" + value + "</td>"

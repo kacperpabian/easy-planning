@@ -18,6 +18,7 @@ class RoomsTable(tables.Table):
 
     class Meta:
         model = Room
+        per_page = 15
         fields = ['room_number', 'capacity']
         attrs = {
             'class': 'table-condensed align-middle',

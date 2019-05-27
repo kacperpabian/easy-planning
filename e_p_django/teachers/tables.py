@@ -24,6 +24,7 @@ class TeacherTable(tables.Table):
 
     class Meta:
         model = Teacher
+        per_page = 15
         fields = ['name', 'surname']
         attrs = {
             'class': 'table-condensed align-middle',
