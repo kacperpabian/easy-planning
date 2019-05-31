@@ -10,7 +10,6 @@ class SchoolForm(forms.ModelForm):
 
     class Meta:
         labels = {
-            'cycle': 'Cykl',
             'school_name': 'Nazwa szkoły',
             'description': 'Opis',
             'weekend_days': 'Dni weekendu',
@@ -18,8 +17,7 @@ class SchoolForm(forms.ModelForm):
             'max_lessons': 'Maksymalna liczba zajęć w ciągu dnia'
         }
         model = School
-        fields = ['school_name', 'cycle',
-                  'weekend_days', 'start_time', 'max_lessons', 'description']
+        fields = ['school_name', 'weekend_days', 'start_time', 'max_lessons', 'description']
 
 
 class SchoolBreakesForm(forms.ModelForm):

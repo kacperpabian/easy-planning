@@ -14,10 +14,10 @@ class School(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     school_name = models.CharField(max_length=100)
     description = models.CharField(max_length=60, blank=True, null=True)
-    weekend_days = models.CharField(max_length=45)
+    weekend_days = models.CharField(max_length=45, default=None, null=True, blank=True)
     start_time = models.CharField(max_length=20)
     max_lessons = models.IntegerField()
-    cycle = models.IntegerField()
+    cycle = models.IntegerField(default=None, null=True, blank=True)
 
     def get_absolute_url(self):
         return reverse('start_page:schools')

@@ -16,9 +16,10 @@ def make_schedule_panel(pk):
     school_object = School.objects.get(id=pk)
     max_lessons = school_object.max_lessons
     work_dict = days_dict.copy()
-    for key, value in list(work_dict.items()):
-        if str(key) in school_object.weekend_days or value in school_object.weekend_days:
-            del work_dict[key]
+    if school_object.weekend_days:
+        for key, value in list(work_dict.items()):
+            if str(key) in school_object.weekend_days or value in school_object.weekend_days:
+                del work_dict[key]
     return max_lessons, school_object, work_dict
 
 
