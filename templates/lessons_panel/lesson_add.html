@@ -6,6 +6,7 @@
 {% endblock %}
 
 {% block body %}
+    {% include 'start_page/messages_template.html' %}
     {% include 'start_page/error_template.html' %}
 
     <div>
@@ -29,7 +30,6 @@
             </div>
 
         <div class="panel panel-default col-md-2">
-            {% include 'start_page/messages_template.html' %}
             <div class="panel-heading">
                 <h3 style="text-align: center;">Dodawanie lekcji</h3>
             </div>

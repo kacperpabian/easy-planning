@@ -5,7 +5,7 @@ from schools.models import School
 
 
 class Subject(models.Model):
-    name = models.CharField(unique=True, max_length=45)
+    name = models.CharField(max_length=45)
     short_name = models.CharField(max_length=45)
     school = models.ForeignKey(School, on_delete=models.CASCADE)  # Field name made lowercase.
 

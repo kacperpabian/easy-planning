@@ -3,12 +3,16 @@ from django import forms
 from .models import Lesson
 from schedules.models import Schedule
 from schools.models import School
+from subjects.models import Subject
+from rooms.models import Room
+from teachers.models import Teacher
 
 
 class LessonForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         work_dict = kwargs.pop('work_dict', None)
         max_lessons = kwargs.pop('max_lessons', None)
+        school_pk = kwargs.pop('school_pk', None)
         super(forms.ModelForm, self).__init__(*args, **kwargs)
         if work_dict:
             work_dict = ((str(key), value) for key, value in work_dict.items())
@@ -20,6 +24,10 @@ class LessonForm(forms.ModelForm):
             if max_lessons:
                 self.fields['lesson_number'] = forms.ChoiceField(required=True, choices=max_lessons,
                                                                  widget=forms.Select(), label="Numer lekcji")
+        if school_pk:
+            self.fields['subject'].queryset = Subject.objects.filter(school_id=school_pk)
+            self.fields['teacher'].queryset = Teacher.objects.filter(school_id=school_pk)
+            self.fields['room'].queryset = Room.objects.filter(school_id=school_pk)
 
     class Meta:
         labels = {
@@ -69,13 +77,3 @@ class ScheduleCombo(forms.ModelForm):
         }
         model = Lesson
         fields = ['class_field', 'schedule']
-
-# class ScheduleCombo(forms.Form):
-#     schedules = None
-#
-#     def __init__(self, *args, **kwargs):
-#         self.school_id = kwargs.pop('school_id')
-#         super(ScheduleCombo, self).__init__(*args, **kwargs)
-#         self.schedules = Schedule.objects.all().filter(school_id=self.school_id)
-#
-#     forms.ModelChoiceField(queryset=schedules)

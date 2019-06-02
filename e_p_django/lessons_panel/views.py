@@ -35,7 +35,7 @@ class LessonsPanelView(generic.TemplateView):
             schedule_id = request.COOKIES.get('schedule_value')
         schedules = ScheduleCombo(school_pk=pk, class_id=class_id, schedule_id=schedule_id)
         max_lessons, school_object, work_dict = make_schedule_panel(pk)
-        lesson_form = LessonForm(work_dict=work_dict, max_lessons=max_lessons)
+        lesson_form = LessonForm(work_dict=work_dict, max_lessons=max_lessons, school_pk=pk)
 
         context = self.get_context_data(
             lesson_form=lesson_form,
@@ -55,13 +55,26 @@ class LessonsPanelView(generic.TemplateView):
         if schedules.is_valid():
             class_id = post_data['class_field']
             schedule_id = post_data['schedule']
+
             if lesson_form.is_valid():
-                self.form_save(lesson_form, class_id, schedule_id)
-                messages.success(request, "Dodano lekcje")
-                response = self.get(request, pk, class_value=class_id, schedule_value=schedule_id)
-                response.set_cookie("class_value", class_id)
-                response.set_cookie("schedule_value", schedule_id)
-                return response
+                lessons_list = Lesson.objects.filter(
+                    schedule_id=schedule_id,
+                    lesson_number=post_data['lesson_number'],
+                    day=post_data['day'])
+                if not lessons_list:
+                    self.form_save(lesson_form, class_id, schedule_id)
+                    messages.success(request, "Dodano lekcje")
+                    response = self.get(request, pk, class_value=class_id, schedule_value=schedule_id)
+                    response.set_cookie("class_value", class_id)
+                    response.set_cookie("schedule_value", schedule_id)
+                    return response
+                else:
+                    messages.warning(request, "Istnieje już lekcja na tej pozycji.")
+                    response = self.get(request, pk, class_value=class_id, schedule_value=schedule_id)
+                    response.set_cookie("class_value", class_id)
+                    response.set_cookie("schedule_value", schedule_id)
+                    return response
+
         return self.get(request, pk)
 
     def form_save(self, form, class_id, schedule_id):
@@ -131,17 +144,17 @@ def load_schedule_panel(request):
                                         lesson.room.room_number + \
                                         "<br>" + lesson.teacher.name + " " + lesson.teacher.surname + "<br>" + \
                                         "<a href=\"" + update_url + "\" " \
-                                        "type='button' class='btn fas fa-edit'><span " \
-                                        "aria-hidden='true'></span></a>" \
-                                        "<a href=\"" + delete_url + "\" " \
-                                        "type='button' class='btn'>" \
-                                        "<span aria-hidden='true'>&times;</span></a></div></td>"
+                                                                    "type='button' class='btn fas fa-edit'><span " \
+                                                                    "aria-hidden='true'></span></a>" \
+                                                                    "<a href=\"" + delete_url + "\" " \
+                                                                                                "type='button' class='btn'>" \
+                                                                                                "<span aria-hidden='true'>&times;</span></a></div></td>"
                         if_inside = True
                 if not if_inside:
                     table_string += "<td></td>"
         table_string += "</tr>"
     pdf_url = reverse('start_page:schools:lessons_panel:render_table', args=[schedule_id])
-    table_string += "</tbody><a href="+pdf_url+" type='button' class='btn btn-danger'>Export to pdf</a>"
+    table_string += "</tbody><a href=" + pdf_url + " type='button' class='btn btn-danger'>Wyeksportuj do PDF</a>"
 
     return render(request, 'lessons_panel/schedule_panel.html', {'schedule_selected': schedule_object,
                                                                  'max_lessons': range(1, max_lessons + 1),
