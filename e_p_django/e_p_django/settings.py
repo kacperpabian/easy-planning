@@ -33,18 +33,13 @@ X_FRAME_OPTIONS = 'DENY'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['localhost',
-                 '185.24.216.166',
-                 'easy-planning-kp.herokuapp.com',
-                 '35.198.149.54',
-                 '10.156.0.8'
-                 ]
+ALLOWED_HOSTS = ['*']
 
-INTERNAL_IPS = ['localhost',
-                '185.24.216.166',
-                '127.0.0.1',
-                '35.198.149.54',
-                '10.156.0.8']
+# INTERNAL_IPS = ['localhost',
+#                 '185.24.216.166',
+#                 '127.0.0.1',
+#                 '35.198.149.54',
+#                 '10.156.0.8']
 
 # Application definition
 
