@@ -74,7 +74,6 @@ class LessonsPanelView(generic.TemplateView):
                     response.set_cookie("class_value", class_id)
                     response.set_cookie("schedule_value", schedule_id)
                     return response
-
         return self.get(request, pk)
 
     def form_save(self, form, class_id, schedule_id):

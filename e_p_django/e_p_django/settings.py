@@ -28,7 +28,7 @@ SECRET_KEY = '=5e-_)pbe_r1d^rdcwu6tw1)2%3976l3kvbr@5q+rh$erpfo&w'
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
