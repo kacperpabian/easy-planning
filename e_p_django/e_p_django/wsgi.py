@@ -12,4 +12,4 @@ from whitenoise.django import DjangoWhiteNoise
 
 os.environ["DJANGO_SETTINGS_MODULE"] = "e_p_django.settings"
 
-application = DjangoWhiteNoise(get_wsgi_application())
+application = get_wsgi_application()
