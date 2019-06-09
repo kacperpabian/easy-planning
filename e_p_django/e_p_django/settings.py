@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=5e-_)pbe_r1d^rdcwu6tw1)2%3976l3kvbr@5q+rh$erpfo&w'
+SECRET_KEY = os.environ.get('ep_secret')
 # SESSION_COOKIE_SECURE = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_BROWSER_XSS_FILTER = True
@@ -31,7 +31,7 @@ X_FRAME_OPTIONS = 'DENY'
 # CSRF_COOKIE_SECURE = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost',
                  '185.24.216.166',
@@ -39,7 +39,9 @@ ALLOWED_HOSTS = ['localhost',
 
 INTERNAL_IPS = ['localhost',
                 '185.24.216.166',
-                '127.0.0.1']
+                '127.0.0.1',
+                '35.198.149.54',
+                '10.156.0.8']
 
 # Application definition
 
@@ -130,7 +132,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'ep_db',
         'USER': 'ep_user',
-        'PASSWORD': 'Axolmi2345!',
+        'PASSWORD': os.environ.get('ep_db_pass'),
         'HOST': '35.198.149.54',
         'PORT': "5432",
     }
