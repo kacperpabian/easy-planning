@@ -31,7 +31,7 @@ X_FRAME_OPTIONS = 'DENY'
 # CSRF_COOKIE_SECURE = True
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['localhost',
                  '185.24.216.166',
